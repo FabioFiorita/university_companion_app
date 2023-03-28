@@ -28,3 +28,7 @@ doc/api/
 
 # IntelliJ and Android Studio
 .idea/
+
+# Flutter Plugins
+.flutter-plugins
+.flutter-plugins-dependencies
