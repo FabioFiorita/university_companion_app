@@ -19,3 +19,12 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+# MacOS Files
+.DS_Store
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ and Android Studio
+.idea/
