@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               text: 'Continuar',
               onPressed: () {
                 if (_currentPage == pages.length - 1) {
-                  Navigator.pop(context);
+                  Beamer.of(context).beamToNamed('/home');
                 } else {
                   pageController.nextPage(
                       duration: const Duration(milliseconds: 500),
