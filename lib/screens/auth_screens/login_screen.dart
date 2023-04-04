@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/input_textfield.dart';
 import 'package:c317_mobile/themes/color_schemes.dart';
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ActionButton(
                   text: 'Entrar',
                   onPressed: () {
-                    Navigator.pushNamed(context, '/onboarding');
+                    Beamer.of(context).beamToNamed('/onboarding');
                   },
                   color: lightColorScheme.primary,
                   textColor: lightColorScheme.onPrimary,
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ActionButton(
                 text: 'Esqueci minha senha',
                 onPressed: () {
-                  Navigator.pushNamed(context, '/forgotPassword');
+                  Beamer.of(context).beamToNamed('/forgot-password');
                 },
               ),
             ],
