@@ -8,7 +8,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final routerDelegate = BeamerDelegate(locationBuilder: appRouter);
+  final routerDelegate =
+      BeamerDelegate(initialPath: '/login', locationBuilder: appRouter);
+
   MyApp({super.key});
 
   @override
@@ -19,7 +21,8 @@ class MyApp extends StatelessWidget {
       darkTheme: appThemeDark,
       routeInformationParser: BeamerParser(),
       routerDelegate: routerDelegate,
-      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: routerDelegate),
+      backButtonDispatcher:
+          BeamerBackButtonDispatcher(delegate: routerDelegate),
     );
   }
 }
