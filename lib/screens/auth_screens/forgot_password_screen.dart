@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/input_textfield.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
             ActionButton(
               text: 'Recuperar a senha',
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Beamer.of(context).beamBack(),
             )
           ],
         ),
