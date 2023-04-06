@@ -36,15 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
                   'Login',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: lightColorScheme.primary,
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        color: Theme.of(context).primaryColor,
                       ),
                 ),
               ),
               Container(
                 height: 3,
                 width: 100,
-                color: lightColorScheme.primary,
+                color: Theme.of(context).primaryColor,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -65,8 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     context.go('/onboarding');
                   },
-                  color: lightColorScheme.primary,
-                  textColor: lightColorScheme.onPrimary,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).canvasColor,
                 ),
               ),
               ActionButton(
@@ -74,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   context.go('/forgot-password');
                 },
+                color: Theme.of(context).canvasColor,
               ),
             ],
           ),
