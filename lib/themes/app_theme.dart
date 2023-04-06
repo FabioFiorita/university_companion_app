@@ -15,16 +15,17 @@ ThemeData appThemeDark = ThemeData(
 );
 
 TextTheme _textTheme = TextTheme(
-  displayLarge: GoogleFonts.poppins(fontSize: 57, fontWeight: FontWeight.w600),
-  displayMedium: GoogleFonts.poppins(fontSize: 45, fontWeight: FontWeight.w600),
-  displaySmall: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w600),
-  headlineLarge: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w600),
-  headlineMedium: GoogleFonts.poppins(fontSize: 26, fontWeight: FontWeight.w600),
-  headlineSmall: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w600),
-  titleLarge: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
-  titleMedium: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400),
-  titleSmall: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w200),
-  bodyLarge: GoogleFonts.poppins(fontSize: 18),
-  bodyMedium: GoogleFonts.poppins(fontSize: 16),
-  bodySmall: GoogleFonts.poppins(fontSize: 14),
+  displayLarge: GoogleFonts.poppins(fontSize: 48.0, fontWeight: FontWeight.w700),
+  displayMedium: GoogleFonts.poppins(fontSize: 34.0, fontWeight: FontWeight.w700),
+  displaySmall: GoogleFonts.poppins(fontSize: 24.0, fontWeight: FontWeight.w700),
+  headlineLarge: GoogleFonts.poppins(fontSize: 24.0, fontWeight: FontWeight.w700),
+  headlineMedium: GoogleFonts.poppins(fontSize: 20.0, fontWeight: FontWeight.w700),
+  headlineSmall: GoogleFonts.poppins(fontSize: 18.0, fontWeight: FontWeight.w700),
+  titleLarge: GoogleFonts.poppins(fontSize: 20.0, fontWeight: FontWeight.w500),
+  titleMedium: GoogleFonts.poppins(fontSize: 18.0, fontWeight: FontWeight.w500),
+  titleSmall: GoogleFonts.poppins(fontSize: 16.0, fontWeight: FontWeight.w500),
+  bodyLarge: GoogleFonts.poppins(fontSize: 16.0, fontWeight: FontWeight.w400),
+  bodyMedium: GoogleFonts.poppins(fontSize: 14.0, fontWeight: FontWeight.w400),
+  bodySmall: GoogleFonts.poppins(fontSize: 12.0, fontWeight: FontWeight.w400),
 );
+
