@@ -33,8 +33,8 @@ class ActionCard extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Icon(
                   icon,
-                  size: 56,
-                  color: lightColorScheme.onPrimary,
+                  size: 48,
+                  color: Theme.of(context).canvasColor,
                 ),
               ),
               Expanded(
@@ -45,7 +45,7 @@ class ActionCard extends StatelessWidget {
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: lightColorScheme.onPrimary,
+                            color: Theme.of(context).canvasColor,
                           ),
                       maxLines: 2,
                       minFontSize: 16,
@@ -56,7 +56,7 @@ class ActionCard extends StatelessWidget {
                       child: AutoSizeText(
                         description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: lightColorScheme.onPrimary,
+                              color: Theme.of(context).canvasColor,
                             ),
                         maxLines: 2,
                         minFontSize: 12,
