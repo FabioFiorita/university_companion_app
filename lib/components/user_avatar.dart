@@ -11,7 +11,7 @@ class UserAvatar extends StatelessWidget {
     if (imageUrl == null) {
       return CircleAvatar(
         radius: 40,
-        backgroundColor: lightColorScheme.primary,
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(
           Icons.person,
           size: 40,
