@@ -33,7 +33,7 @@ class ActionButton extends StatelessWidget {
           text,
           style: Theme.of(context)
               .textTheme
-              .bodyMedium
+              .titleMedium
               ?.copyWith(color: textColor),
         ),
       ),
