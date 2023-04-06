@@ -52,8 +52,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           PageViewDotIndicator(
             currentItem: _currentPage,
             count: pages.length,
-            selectedColor: lightColorScheme.primary,
-            unselectedColor: lightColorScheme.secondaryContainer,
+            selectedColor: Theme.of(context).primaryColor,
+            unselectedColor: Theme.of(context).disabledColor,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
@@ -69,11 +69,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 }
               },
               color: _currentPage == pages.length - 1
-                  ? lightColorScheme.primary
-                  : null,
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).unselectedWidgetColor,
               textColor: _currentPage == pages.length - 1
-                  ? lightColorScheme.onPrimary
-                  : null,
+                  ? Theme.of(context).canvasColor
+                  : Theme.of(context).canvasColor,
             ),
           )
         ],
