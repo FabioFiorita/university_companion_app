@@ -1,8 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/input_textfield.dart';
 import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ActionButton(
                   text: 'Entrar',
                   onPressed: () {
-                    Beamer.of(context).beamToNamed('/onboarding');
+                    context.go('/onboarding');
                   },
                   color: lightColorScheme.primary,
                   textColor: lightColorScheme.onPrimary,
@@ -73,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ActionButton(
                 text: 'Esqueci minha senha',
                 onPressed: () {
-                  Beamer.of(context).beamToNamed('/forgot-password');
+                  context.go('/forgot-password');
                 },
               ),
             ],
