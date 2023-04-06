@@ -1,5 +1,6 @@
 import 'package:c317_mobile/routes/app_router.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
+import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'UniApp',
       theme: appTheme,
-      darkTheme: appThemeDark,
+      darkTheme: appTheme.copyWith(
+        scaffoldBackgroundColor: darkColorScheme.background,
+        colorScheme: darkColorScheme,
+      ),
       routerConfig: AppRouter.routerConfig,
     );
   }
