@@ -21,13 +21,16 @@ class OnboardingPage extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               size: 200,
             ),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.center,
+              ),
             ),
             Text(description,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center),
           ],
         ),
