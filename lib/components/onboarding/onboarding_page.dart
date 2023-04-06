@@ -18,7 +18,7 @@ class OnboardingPage extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: lightColorScheme.primary,
+              color: Theme.of(context).primaryColor,
               size: 200,
             ),
             Text(
