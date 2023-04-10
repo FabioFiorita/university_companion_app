@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-import '../themes/color_schemes.dart';
-
 class NavigationScreen extends StatefulWidget {
   final Widget child;
 
