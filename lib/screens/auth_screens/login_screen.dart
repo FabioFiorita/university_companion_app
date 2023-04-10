@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ActionButton(
                 text: 'Esqueci minha senha',
                 onPressed: () {
-                  context.go('/forgot-password');
+                  context.push('/forgot-password');
                 },
                 color: Theme.of(context).canvasColor,
               ),
