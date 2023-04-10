@@ -2,6 +2,7 @@ import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
 import 'package:c317_mobile/components/user_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,7 +47,13 @@ class HomeScreen extends StatelessWidget {
               child: ActionCard(
                 title: 'Ligar para a universidade',
                 description: 'Ver números da universidade para atendimento',
-                onPressed: () {},
+                onPressed: () {
+                  context.pushNamed('information', params: {
+                    'title': 'Contatos',
+                    'subtitle': 'Números',
+                    'isTeacherList': 'false'
+                  });
+                },
                 icon: Icons.phone,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -54,7 +61,13 @@ class HomeScreen extends StatelessWidget {
             ActionCard(
               title: 'E-mail dos professores',
               description: 'Veja os e-mails dos professores para tirar dúvidas',
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed('information', params: {
+                  'title': 'Contatos',
+                  'subtitle': 'Professores',
+                  'isTeacherList': 'true'
+                });
+              },
               icon: Icons.mail,
               color: Theme.of(context).colorScheme.secondary,
             ),
