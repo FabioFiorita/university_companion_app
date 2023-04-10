@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../components/subject_list/subject_card.dart';
+import '../../components/grades/subject_card.dart';
+
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class SubjectListScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
-                children: [
+                children: const [
                   SubjectCard(
                     subject: 'C317',
                   ),
