@@ -10,11 +10,11 @@ class SubjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: InkWell(
-        onTap: () {
-          context.push('/subjects/$subject');
-        },
-        child: Card(
+      child: Card(
+        child: InkWell(
+          onTap: () {
+            context.push('/subjects/$subject');
+          },
           child: Padding(
             padding: const EdgeInsets.only(
               left: 16.0,
