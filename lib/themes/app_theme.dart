@@ -1,13 +1,35 @@
-import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
-ThemeData appTheme = ThemeData(
+ThemeData appTheme = FlexThemeData.light(
+  scheme: FlexScheme.tealM3,
+  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+  blendLevel: 7,
+  subThemesData: const FlexSubThemesData(
+    useM2StyleDividerInM3: true,
+  ),
+  keyColors: const FlexKeyColors(),
+  visualDensity: FlexColorScheme.comfortablePlatformDensity,
   useMaterial3: true,
-  colorScheme: lightColorScheme,
+  swapLegacyOnMaterial3: true,
   textTheme: _textTheme,
-  scaffoldBackgroundColor: lightColorScheme.background,
 );
+
+ThemeData darkAppTheme = FlexThemeData.dark(
+scheme: FlexScheme.tealM3,
+surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+blendLevel: 13,
+subThemesData: const FlexSubThemesData(
+useM2StyleDividerInM3: true,
+),
+keyColors: const FlexKeyColors(),
+visualDensity: FlexColorScheme.comfortablePlatformDensity,
+useMaterial3: true,
+swapLegacyOnMaterial3: true,
+textTheme: _textTheme,
+);
+
 
 TextTheme _textTheme = TextTheme(
   displayLarge:
