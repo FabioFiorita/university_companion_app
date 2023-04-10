@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
 
 class ActionCard extends StatelessWidget {
