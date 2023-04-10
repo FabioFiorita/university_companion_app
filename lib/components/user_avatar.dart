@@ -11,9 +11,10 @@ class UserAvatar extends StatelessWidget {
       return CircleAvatar(
         radius: 40,
         backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(
+        child: Icon(
           Icons.person,
           size: 40,
+          color: Theme.of(context).dialogBackgroundColor,
         ),
       );
     } else {
