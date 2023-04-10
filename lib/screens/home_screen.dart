@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 24.0),
+        padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
