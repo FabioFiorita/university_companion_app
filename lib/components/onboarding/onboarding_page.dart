@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../themes/color_schemes.dart';
-
 class OnboardingPage extends StatelessWidget {
   IconData icon;
   String title;
