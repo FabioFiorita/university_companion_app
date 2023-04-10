@@ -1,5 +1,4 @@
 import 'package:c317_mobile/components/action_button.dart';
-import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
