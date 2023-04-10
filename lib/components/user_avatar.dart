@@ -1,4 +1,3 @@
-import 'package:c317_mobile/themes/color_schemes.dart';
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
