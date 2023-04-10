@@ -1,6 +1,7 @@
 import 'package:c317_mobile/screens/classes_schedule_screen.dart';
 import 'package:c317_mobile/screens/grades_screens/subject_grade_screen.dart';
 import 'package:c317_mobile/screens/home_screen.dart';
+import 'package:c317_mobile/screens/information_list_screen.dart';
 import 'package:c317_mobile/screens/navigation_screen.dart';
 import 'package:c317_mobile/screens/auth_screens/login_screen.dart';
 import 'package:c317_mobile/screens/onboarding_screen.dart';
@@ -46,6 +47,19 @@ class AppRouter {
             parentNavigatorKey: _shellKey,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: HomeScreen()),
+            routes: [
+              GoRoute(
+                name: 'information',
+                path: ':title/:subtitle/:isTeacherList',
+                parentNavigatorKey: _parentKey,
+                builder: (context, state) => InformationListScreen(
+                  title: state.params['title']!,
+                  listLabel: state.params['subtitle']!,
+                  isTeacherList:
+                      (state.params['isTeacherList']! == 'true') ? true : false,
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: '/classes',
