@@ -19,13 +19,13 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: SizedBox(
-        width: double.infinity,
-        height: 120,
-        child: Card(
-          color: color,
+    return SizedBox(
+      width: double.infinity,
+      height: 120,
+      child: Card(
+        color: color,
+        child: InkWell(
+          onTap: onPressed,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -44,10 +44,11 @@ class ActionCard extends StatelessWidget {
                     children: [
                       AutoSizeText(
                         title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).canvasColor,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).canvasColor,
+                                ),
                         maxLines: 2,
                         minFontSize: 16,
                         overflow: TextOverflow.ellipsis,
@@ -56,9 +57,10 @@ class ActionCard extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                         child: AutoSizeText(
                           description,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).canvasColor,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
                           maxLines: 2,
                           minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
