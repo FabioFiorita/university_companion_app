@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
               UserAvatar(),
               IconButton(
                 onPressed: () {
-                  context.go('/login');
+                  context.replace('/login');
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
                 color: Theme.of(context).colorScheme.error,
