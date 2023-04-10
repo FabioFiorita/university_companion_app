@@ -8,7 +8,7 @@ class SubjectGradeScreen extends StatelessWidget {
 
   SubjectGradeScreen({Key? key, required this.subject}) : super(key: key);
 
-  final Map<String, int?> grades = {'NP1': 10, 'NP2': 10, 'NP3': null};
+  final Map<String, int?> grades = {'NP1': 80, 'NP2': 50, 'NP3': 10, 'NPL': 90};
 
   @override
   Widget build(BuildContext context) {
