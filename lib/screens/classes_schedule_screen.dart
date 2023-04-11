@@ -24,19 +24,19 @@ class ClassesScheduleScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   ClassCard(
-                    subject: 'Matemática',
-                    date: 'Terça-feira 10:00 - 12:00',
-                    location: 'Aula 1',
+                    subject: 'C317',
+                    date: 'Sexta-feira 19:30 - 21:10',
+                    location: 'Teams',
                   ),
                   ClassCard(
-                    subject: 'Matemática',
-                    date: 'Sexta-feira 10:00 - 12:00',
-                    location: 'Aula 1',
+                    subject: 'C202',
+                    date: 'Quinta-feira 13:30 - 15:10',
+                    location: 'I-15',
                   ),
                   ClassCard(
-                    subject: 'Matemática',
-                    date: 'Quarta-feira 10:00 - 12:00',
-                    location: 'Aula 1',
+                    subject: 'C214',
+                    date: 'Segunda-feira 10:00 - 11:40',
+                    location: 'I-17',
                   ),
               ],
               ),
