@@ -22,7 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     OnboardingPage(
       icon: Icons.chrome_reader_mode,
-      title: 'Desempenho no\nAcadêmico',
+      title: 'Desempenho\nAcadêmico',
       description: 'Veja suas notas e simule suas médias.',
     ),
   ];
