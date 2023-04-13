@@ -30,7 +30,7 @@ class AppRouter {
       GoRoute(
         path: '/forgot-password',
         parentNavigatorKey: _parentKey,
-        builder: (context, state) => const ForgotPasswordScreen(),
+        builder: (context, state) => ForgotPasswordScreen(),
       ),
       GoRoute(
         path: '/onboarding',
