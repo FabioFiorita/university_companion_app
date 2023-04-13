@@ -5,8 +5,10 @@ class InputTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final bool isPassword;
+  final String? Function(String?)? validator;
+  final GlobalKey<FormFieldState> formFieldKey;
 
-  const InputTextField({Key? key, this.label, this.keyboardType, this.controller, required this.isPassword}) : super(key: key);
+  const InputTextField({Key? key, this.label, this.keyboardType, this.controller, required this.isPassword, this.validator, required this.formFieldKey}) : super(key: key);
 
   @override
   State<InputTextField> createState() => _InputTextFieldState();
@@ -17,10 +19,12 @@ class _InputTextFieldState extends State<InputTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      key: widget.formFieldKey,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.isPassword ? _showPassword : false,
+      validator: widget.validator,
       decoration: InputDecoration(
         suffixIcon: widget.isPassword ? InkWell(
           onTap: () {
