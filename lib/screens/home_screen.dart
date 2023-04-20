@@ -1,21 +1,26 @@
+import 'dart:typed_data';
+
 import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
 import 'package:c317_mobile/components/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../controller/profile_picture_controller.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final image = ProfilePictureController.getImage(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserAvatar(),
+            (image != null) ? UserAvatar(imageUrl: image) : const UserAvatar(),
             Text(
               'Bem vindo(a)',
               style: Theme.of(context).textTheme.displaySmall,
