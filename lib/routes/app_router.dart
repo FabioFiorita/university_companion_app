@@ -16,7 +16,7 @@ final _parentKey = GlobalKey<NavigatorState>(debugLabel: 'parent');
 final _shellKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 class AppRouter {
-  static final isAuth = ValueNotifier<bool>(false);
+  static final isAuth = ValueNotifier<bool>(true);
   static final routerConfig = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: isAuth.value ? '/' : '/login',
