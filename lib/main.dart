@@ -1,4 +1,5 @@
 import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/routes/app_router.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ void main() {
       ChangeNotifierProvider<ProfilePictureProvider>(
         create: (_) => ProfilePictureProvider(),
       ),
+      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
     ],
     child: const MyApp(),
   ));
