@@ -1,12 +1,14 @@
-import 'package:c317_mobile/models/shared_preferences_provider.dart';
 import 'package:c317_mobile/routes/app_router.dart';
+import 'package:c317_mobile/state/profile_picture_store.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => SharedPreferencesProvider()),
+    Provider<ProfilePictureStore>(
+      create: (_) => ProfilePictureStore(),
+    ),
   ], child: const MyApp()));
 }
 
