@@ -8,12 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfilePictureProvider extends ChangeNotifier {
   late SharedPreferences _prefs;
 
-  ProfilePictureProvider() {
-    _initPrefs();
+  ProfilePictureProvider(SharedPreferences prefs) {
+    _initPrefs(prefs);
   }
 
-  Future<void> _initPrefs() async {
-    _prefs = await SharedPreferences.getInstance();
+  Future<void> _initPrefs(SharedPreferences prefs) async {
+    _prefs = prefs;
     loadImage();
     notifyListeners();
   }
