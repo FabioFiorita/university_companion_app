@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../exceptions/user_not_found_exception.dart';
 import '../http/web_client.dart';
 import '../models/user.dart';
+import '../state/user_store.dart';
 
 class AuthService {
   http.Client client = WebClient().client;
@@ -36,7 +35,7 @@ class AuthService {
   Future<String> saveInfosFromResponse(String body) async {
     final String accessToken = json.decode(body)["accessToken"];
     final User user = User.fromJson(json.decode(body)["user"], accessToken);
-    Provider.of<UserProvider>(context, listen: false).setUser(user);
+    Provider.of<UserStore>(context, listen: false).setUser(user);
 
     return user.name;
   }
