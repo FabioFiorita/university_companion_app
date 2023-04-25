@@ -1,13 +1,11 @@
-import 'dart:io';
-
-import 'package:c317_mobile/components/user_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/profile_picture_controller.dart';
-import '../models/shared_preferences_provider.dart';
+import '../components/profile_picture.dart';
+import '../state/profile_picture_store.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -21,7 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final image = ProfilePictureController.getImage(context);
+    final ProfilePictureStore profilePictureStore =
+        Provider.of<ProfilePictureStore>(context, listen: false);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -32,45 +31,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              (image != null)
-                  ? UserAvatar(imageUrl: image)
-                  : GestureDetector(
-                      onTap: () {
-                        picker
-                            .pickImage(
-                              source: ImageSource.gallery,
-                            )
-                            .then(
-                              (image) => {
-                                if (image != null)
-                                  {
-                                    setState(() {
-                                      ProfilePictureController.setImage(
-                                          File(image.path), context);
-                                    }),
-                                  }
-                              },
-                            );
-                      },
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          const UserAvatar(),
-                          CircleAvatar(
-                            radius: 16,
-                            child: Icon(
-                              Icons.edit,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
+              GestureDetector(
+                onTap: () {
+                  picker
+                      .pickImage(
+                        source: ImageSource.gallery,
+                      )
+                      .then(
+                        (image) => {
+                          if (image != null)
+                            {
+                              profilePictureStore.saveImage(image),
+                            }
+                        },
+                      );
+                },
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    const ProfilePicture(),
+                    CircleAvatar(
+                      radius: 16,
+                      child: Icon(
+                        Icons.edit,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
+                  ],
+                ),
+              ),
               IconButton(
                 onPressed: () async {
-                  Provider.of<SharedPreferencesProvider>(context, listen: false)
-                      .prefs
-                      ?.remove('image');
+                  profilePictureStore.deleteImage();
                   context.replace('/login');
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
