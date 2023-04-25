@@ -1,6 +1,6 @@
 import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
+import 'package:c317_mobile/state/user_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final ProfilePictureProvider profilePictureProvider =
         Provider.of<ProfilePictureProvider>(context, listen: false);
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -63,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               IconButton(
                 onPressed: () async {
                   profilePictureProvider.deleteImage();
+                  userStore.clearUser();
                   context.replace('/login');
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
