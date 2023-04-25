@@ -16,7 +16,7 @@ final _parentKey = GlobalKey<NavigatorState>(debugLabel: 'parent');
 final _shellKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 class AppRouter {
-  static final isAuth = ValueNotifier<bool>(true);
+  static final isAuth = ValueNotifier<bool>(false);
   static final routerConfig = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: isAuth.value ? '/' : '/login',
@@ -25,7 +25,7 @@ class AppRouter {
       GoRoute(
         path: '/login',
         parentNavigatorKey: _parentKey,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         path: '/forgot-password',
