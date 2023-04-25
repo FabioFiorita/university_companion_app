@@ -1,3 +1,4 @@
+import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../components/profile_picture.dart';
-import '../state/profile_picture_store.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -19,8 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ProfilePictureStore profilePictureStore =
-        Provider.of<ProfilePictureStore>(context, listen: false);
+    final ProfilePictureProvider profilePictureProvider =
+        Provider.of<ProfilePictureProvider>(context, listen: false);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         (image) => {
                           if (image != null)
                             {
-                              profilePictureStore.saveImage(image),
+                              profilePictureProvider.saveImage(image),
                             }
                         },
                       );
@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               IconButton(
                 onPressed: () async {
-                  profilePictureStore.deleteImage();
+                  profilePictureProvider.deleteImage();
                   context.replace('/login');
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
