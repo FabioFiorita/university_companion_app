@@ -1,4 +1,5 @@
 class User {
+  final int id;
   final String email;
   final String accessToken;
   final String name;
@@ -6,6 +7,7 @@ class User {
   final String enrollmentNumber;
 
   User({
+    required this.id,
     required this.email,
     required this.accessToken,
     required this.name,
@@ -15,15 +17,17 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json, String accessToken) {
     return User(
+      id: json['id'],
       email: json['email'],
       accessToken: accessToken,
       name: json['name'],
       course: json['course'],
-      enrollmentNumber: json['enrollmentNumber'],
+      enrollmentNumber: json['enrollment_number'],
     );
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'email': email,
         'password': accessToken,
         'name': name,
