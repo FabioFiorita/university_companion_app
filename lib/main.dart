@@ -1,17 +1,22 @@
 import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/routes/app_router.dart';
+import 'package:c317_mobile/state/user_store.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<ProfilePictureProvider>(
-        create: (_) => ProfilePictureProvider(),
+        create: (_) => ProfilePictureProvider(prefs),
       ),
-      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+      Provider<UserStore>(
+        create: (_) => UserStore(prefs),
+      ),
     ],
     child: const MyApp(),
   ));
@@ -22,13 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserStore userStore = Provider.of<UserStore>(context);
+    AppRouter router = AppRouter(userStore);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'UniApp',
       theme: appTheme,
       darkTheme: darkAppTheme,
       themeMode: ThemeMode.system,
-      routerConfig: AppRouter.routerConfig,
+      routerConfig: router.routerConfig,
     );
   }
 }
