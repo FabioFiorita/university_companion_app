@@ -55,6 +55,6 @@ class SubjectGradeScreen extends StatelessWidget {
   }
 
   int getAverage() {
-    return 40;
+    return grades.values.reduce((a, b) => a! + b!)! ~/ grades.length;
   }
 }
