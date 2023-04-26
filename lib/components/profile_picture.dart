@@ -1,5 +1,5 @@
 import 'package:c317_mobile/components/user_avatar.dart';
-import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
+import 'package:c317_mobile/providers/profile_picture_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
