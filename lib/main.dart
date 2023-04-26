@@ -1,6 +1,6 @@
-import 'package:c317_mobile/providers/ProfilePictureProvider.dart';
+import 'package:c317_mobile/providers/profile_picture_provider.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/routes/app_router.dart';
-import 'package:c317_mobile/state/user_store.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,8 @@ void main() async {
       ChangeNotifierProvider<ProfilePictureProvider>(
         create: (_) => ProfilePictureProvider(prefs),
       ),
-      Provider<UserStore>(
-        create: (_) => UserStore(prefs),
+      ChangeNotifierProvider<UserProvider>(
+        create: (_) => UserProvider(prefs),
       ),
     ],
     child: const MyApp(),
@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserStore userStore = Provider.of<UserStore>(context);
-    AppRouter router = AppRouter(userStore);
+    AppRouter router = AppRouter(context);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'UniApp',
