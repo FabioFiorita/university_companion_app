@@ -1,3 +1,4 @@
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/screens/classes_schedule_screen.dart';
 import 'package:c317_mobile/screens/grades_screens/subject_grade_screen.dart';
 import 'package:c317_mobile/screens/home_screen.dart';
@@ -7,22 +8,22 @@ import 'package:c317_mobile/screens/auth_screens/login_screen.dart';
 import 'package:c317_mobile/screens/onboarding_screen.dart';
 import 'package:c317_mobile/screens/profile_screen.dart';
 import 'package:c317_mobile/screens/grades_screens/subjects_list_screen.dart';
-import 'package:c317_mobile/state/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/auth_screens/forgot_password_screen.dart';
 
 final _parentKey = GlobalKey<NavigatorState>(debugLabel: 'parent');
 final _shellKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
-final GlobalKey<NavigatorState> _loginNavigatorKey = GlobalKey();
-final GlobalKey<NavigatorState> _homeNavigatorKey = GlobalKey();
 
 class AppRouter {
-  final UserStore userStore;
+  final BuildContext context;
   late final GoRouter routerConfig;
 
-  AppRouter(this.userStore) {
+  AppRouter(this.context) {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     routerConfig = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: '/login',
@@ -102,13 +103,9 @@ class AppRouter {
         ),
       ],
       redirect: (context, state) async {
-        if (userStore.isLoggedIn) {
+        if (userProvider.isLoggedIn) {
           if (state.location == '/login') {
             return '/';
-          }
-        } else {
-          if (state.location != '/login') {
-            return '/login';
           }
         }
       },
