@@ -1,4 +1,5 @@
 import 'package:c317_mobile/providers/profile_picture_provider.dart';
+import 'package:c317_mobile/providers/subjects_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/routes/app_router.dart';
 import 'package:c317_mobile/themes/app_theme.dart';
@@ -16,6 +17,9 @@ void main() async {
       ),
       ChangeNotifierProvider<UserProvider>(
         create: (_) => UserProvider(prefs),
+      ),
+      ChangeNotifierProvider<SubjectsProvider>(
+        create: (_) => SubjectsProvider(),
       ),
     ],
     child: const MyApp(),
