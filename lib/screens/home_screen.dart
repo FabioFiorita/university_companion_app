@@ -1,7 +1,9 @@
 import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../components/profile_picture.dart';
 
@@ -10,6 +12,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -26,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
-                    'Avner Joseph',
+                    userProvider.user?.name ?? '',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
