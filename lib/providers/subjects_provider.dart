@@ -1,6 +1,7 @@
 import 'package:c317_mobile/models/subject.dart';
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
 import '../service/subject_service.dart';
 
 class SubjectsProvider extends ChangeNotifier {
@@ -8,15 +9,17 @@ class SubjectsProvider extends ChangeNotifier {
 
   List<Subject> get subjects => _subjects;
 
-  setSubjects(List<Subject> subjects) {
+  Future<bool> getSubjects(User? user) async {
+    if (user == null) {
+      return false;
+    }
+    final SubjectService subjectService = SubjectService();
+    final List<Subject> subjects = await subjectService.getSubjects(user);
+    if (subjects.isEmpty) {
+      return false;
+    }
     _subjects = subjects;
     notifyListeners();
-  }
-
-  Future<bool> getSubjects(BuildContext context) async {
-    final SubjectService subjectService = SubjectService(context: context);
-    final bool result = await subjectService.getSubjects();
-    notifyListeners();
-    return result;
+    return true;
   }
 }
