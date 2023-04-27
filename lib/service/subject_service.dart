@@ -13,22 +13,14 @@ import '../models/user.dart';
 
 class SubjectService {
   http.Client client = WebClient().client;
-  final BuildContext context;
-  late final User user;
 
-  SubjectService({required this.context}) {
-    if (Provider.of<UserProvider>(context, listen: false).user != null) {
-      user = Provider.of<UserProvider>(context, listen: false).user!;
-    }
-  }
-
-  Future<bool> getSubjects() async {
+  Future<List<Subject>> getSubjects(User user) async {
     http.Response response = await client.get(
       Uri.parse("${WebClient.baseUrl}users/${user.id}/subjects"),
       headers: {
         "Authorization": "Bearer ${user.accessToken}",
       },
-    );
+    ).timeout(const Duration(seconds: 5));
 
     if (response.statusCode != 200) {
       if (json.decode(response.body).toString() == "Cannot find subjects") {
@@ -40,13 +32,12 @@ class SubjectService {
     return saveInfoFromResponse(response.body);
   }
 
-  Future<bool> saveInfoFromResponse(String body) async {
+  Future<List<Subject>> saveInfoFromResponse(String body) async {
     final List<Subject> subjects = json
         .decode(body)
         .map<Subject>((subject) => Subject.fromJson(subject))
         .toList();
-    Provider.of<SubjectsProvider>(context, listen: false).setSubjects(subjects);
 
-    return true;
+    return subjects;
   }
 }
