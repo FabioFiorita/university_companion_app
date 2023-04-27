@@ -1,4 +1,5 @@
 import 'package:c317_mobile/providers/subjects_provider.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/service/subject_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +12,9 @@ class SubjectListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SubjectService subjectService = SubjectService(context: context);
-    final subjectProvider =
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final SubjectsProvider subjectProvider =
         Provider.of<SubjectsProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -29,9 +31,14 @@ class SubjectListScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder<bool>(
-                future: subjectProvider.getSubjects(context),
+                future: subjectProvider.getSubjects(userProvider.user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.data == false || snapshot.hasError) {
+                      return const Center(
+                        child: Text('Erro ao carregar as matérias'),
+                      );
+                    }
                     final subjects = subjectProvider.subjects;
                     return ListView.builder(
                       itemCount: subjects.length,
