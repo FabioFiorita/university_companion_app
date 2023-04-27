@@ -1,42 +1,60 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:c317_mobile/providers/user_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
-import '../exceptions/user_not_found_exception.dart';
 import '../http/web_client.dart';
 import '../models/user.dart';
+import '../exceptions/login_exception.dart';
 
 class AuthService {
   http.Client client = WebClient().client;
-  final BuildContext context;
 
-  AuthService({required this.context});
+  Future<User> login(String email, String password) async {
+    try {
+      final http.Response response = await client.post(
+        Uri.parse("${WebClient.baseUrl}login"),
+        body: {"email": email, "password": password},
+      ).timeout(const Duration(seconds: 5));
 
-  Future<String> login(String email, String password) async {
-    http.Response response = await client.post(
-      Uri.parse("${WebClient.baseUrl}login"),
-      body: {"email": email, "password": password},
-    );
-
-    if (response.statusCode != 200) {
-      if (json.decode(response.body).toString() == "Cannot find user") {
-        throw UserNotFoundException();
+      if (response.statusCode != 200) {
+        _handleStatusCode(response);
       }
-      throw HttpException(response.body.toString());
-    }
 
-    return saveInfoFromResponse(response.body);
+      return saveInfoFromResponse(response.body);
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<String> saveInfoFromResponse(String body) async {
+  Future<User> saveInfoFromResponse(String body) async {
     final String accessToken = json.decode(body)["accessToken"];
     final User user = User.fromJson(json.decode(body)["user"], accessToken);
-    Provider.of<UserProvider>(context, listen: false).setUser(user);
 
-    return user.name;
+    return user;
+  }
+
+  void _handleStatusCode(http.Response response) {
+    switch (response.statusCode) {
+      case 200:
+        // success
+        break;
+      case 400:
+        if (response.body.toLowerCase().contains("email")) {
+          throw LoginException.invalidEmail;
+        } else if (response.body.toLowerCase().contains("password")) {
+          throw LoginException.wrongPassword;
+        } else if (response.body.toLowerCase().contains("user")) {
+          throw LoginException.userNotFound;
+        } else {
+          throw LoginException.undefined;
+        }
+      case 404:
+        throw LoginException.userNotFound;
+      case 429:
+        throw LoginException.tooManyRequests;
+      default:
+        throw LoginException.invalidEmail;
+    }
   }
 }
