@@ -54,7 +54,7 @@ class AuthService {
       case 429:
         throw LoginException.tooManyRequests;
       default:
-        throw LoginException.invalidEmail;
+        throw LoginException.undefined;
     }
   }
 }
