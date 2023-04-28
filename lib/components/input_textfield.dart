@@ -7,6 +7,7 @@ class InputTextField extends StatefulWidget {
   final bool isPassword;
   final String? Function(String?)? validator;
   final GlobalKey<FormFieldState> formFieldKey;
+  final bool? autofocus;
 
   const InputTextField(
       {Key? key,
@@ -15,7 +16,8 @@ class InputTextField extends StatefulWidget {
       this.controller,
       required this.isPassword,
       this.validator,
-      required this.formFieldKey})
+      required this.formFieldKey,
+      this.autofocus})
       : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class _InputTextFieldState extends State<InputTextField> {
       keyboardType: widget.keyboardType,
       obscureText: widget.isPassword ? _hidePassword : false,
       validator: widget.validator,
+      autofocus: (widget.autofocus == null) ? false : widget.autofocus!,
       decoration: InputDecoration(
         suffixIcon: widget.isPassword
             ? InkWell(
