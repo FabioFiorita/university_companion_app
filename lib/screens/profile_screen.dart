@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {
-                  picker
+                onTap: () async {
+                  await picker
                       .pickImage(
                         source: ImageSource.gallery,
                       )
