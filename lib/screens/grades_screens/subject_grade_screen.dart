@@ -17,7 +17,6 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
   Map<String, int?> grades = {'NP1': 80, 'NP2': 50, 'NP3': 10, 'NPL': 90};
 
   final TextEditingController gradeNameController = TextEditingController();
-
   final TextEditingController gradeValueController = TextEditingController();
   bool isSimulating = false;
 
@@ -78,17 +77,35 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
+                  isDismissible: true,
                   builder: (context) {
                     return GradeBottomSheet(
                       onPressed: () {
                         setState(
                           () {
-                            grades.addEntries([
-                              MapEntry(
-                                gradeNameController.text,
-                                int.parse(gradeValueController.text),
-                              )
-                            ]);
+                            if (grades.containsKey(gradeNameController.text)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  elevation: 0.0,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                  content: Text(
+                                    'Já existe uma avaliação com esse nome',
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.onError,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              grades.addEntries([
+                                MapEntry(
+                                  gradeNameController.text,
+                                  int.parse(gradeValueController.text),
+                                )
+                              ]);
+                            }
                             Navigator.pop(context);
                           },
                         );
