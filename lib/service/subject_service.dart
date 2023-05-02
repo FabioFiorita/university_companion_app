@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:c317_mobile/exceptions/subject_exception.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';

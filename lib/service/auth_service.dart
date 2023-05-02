@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:c317_mobile/exceptions/general_exception.dart';
 import 'package:http/http.dart' as http;
 
+import '../exceptions/user_exception.dart';
 import '../http/web_client.dart';
 import '../models/user.dart';
-import '../exceptions/user_exception.dart';
 
 class AuthService {
   http.Client client = WebClient().client;

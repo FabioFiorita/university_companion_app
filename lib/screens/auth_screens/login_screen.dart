@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/input_textfield.dart';
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

@@ -1,13 +1,13 @@
 import 'package:c317_mobile/providers/user_provider.dart';
+import 'package:c317_mobile/screens/auth_screens/login_screen.dart';
 import 'package:c317_mobile/screens/classes_schedule_screen.dart';
 import 'package:c317_mobile/screens/grades_screens/subject_grade_screen.dart';
+import 'package:c317_mobile/screens/grades_screens/subjects_list_screen.dart';
 import 'package:c317_mobile/screens/home_screen.dart';
 import 'package:c317_mobile/screens/information_list_screen.dart';
 import 'package:c317_mobile/screens/navigation_screen.dart';
-import 'package:c317_mobile/screens/auth_screens/login_screen.dart';
 import 'package:c317_mobile/screens/onboarding_screen.dart';
 import 'package:c317_mobile/screens/profile_screen.dart';
-import 'package:c317_mobile/screens/grades_screens/subjects_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
