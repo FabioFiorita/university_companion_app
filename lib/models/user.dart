@@ -25,13 +25,4 @@ class User {
       enrollmentNumber: json['enrollment_number'],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'email': email,
-        'password': accessToken,
-        'name': name,
-        'course': course,
-        'enrollment_number': enrollmentNumber,
-      };
 }
