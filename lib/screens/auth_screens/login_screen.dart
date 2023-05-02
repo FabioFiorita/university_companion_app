@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/input_textfield.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
-import 'package:c317_mobile/exceptions/login_exception.dart';
+import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -115,19 +115,21 @@ class LoginScreen extends StatelessWidget {
       context.go('/onboarding');
     }).catchError(
       (e) {
-        if (e is LoginException) {
-          MaterialDialog.showMaterialDialog(context, e.title, e.message);
+        if (e is UserException) {
+          MaterialDialog.showMaterialDialog(
+              context: context, title: e.title, message: e.message);
         } else if (e is SocketException) {
           MaterialDialog.showMaterialDialog(
-            context,
-            'Erro de conexão',
-            'Verifique sua conexão com a internet.',
+            context: context,
+            title: 'Erro de conexão',
+            message: 'Verifique sua conexão com a internet.',
           );
         } else {
           MaterialDialog.showMaterialDialog(
-            context,
-            'Erro desconhecido',
-            'Ocorreu um erro desconhecido. Tente novamente mais tarde.',
+            context: context,
+            title: 'Erro desconhecido',
+            message:
+                'Ocorreu um erro desconhecido. Tente novamente mais tarde.',
           );
         }
       },
