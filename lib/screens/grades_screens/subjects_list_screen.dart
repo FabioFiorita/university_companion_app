@@ -1,13 +1,12 @@
 import 'package:c317_mobile/components/error_body.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
-import 'package:c317_mobile/providers/subjects_provider.dart';
+import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/grades/subject_card.dart';
 import '../../exceptions/subject_exception.dart';
-import '../../utils/material_dialog.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);
@@ -16,8 +15,8 @@ class SubjectListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
-    final SubjectsProvider subjectProvider =
-        Provider.of<SubjectsProvider>(context, listen: false);
+    final SubjectProvider subjectProvider =
+        Provider.of<SubjectProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Materias'),
@@ -74,10 +73,7 @@ class SubjectListScreen extends StatelessWidget {
         message: error.message,
       );
     } else {
-      return const ErrorBody(
-        title: 'Erro',
-        message: 'Erro desconhecido',
-      );
+      return const ErrorBody();
     }
   }
 }
