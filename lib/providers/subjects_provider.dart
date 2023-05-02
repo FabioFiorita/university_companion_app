@@ -1,3 +1,5 @@
+import 'package:c317_mobile/exceptions/user_exception.dart';
+import 'package:c317_mobile/exceptions/subject_exception.dart';
 import 'package:c317_mobile/models/subject.dart';
 import 'package:flutter/material.dart';
 
@@ -9,17 +11,20 @@ class SubjectsProvider extends ChangeNotifier {
 
   List<Subject> get subjects => _subjects;
 
-  Future<bool> getSubjects(User? user) async {
+  Future<void> getSubjects(User? user) async {
     if (user == null) {
-      return false;
+      throw UserException.userNotFound;
     }
     final SubjectService subjectService = SubjectService();
-    final List<Subject> subjects = await subjectService.getSubjects(user);
-    if (subjects.isEmpty) {
-      return false;
+    try {
+      final List<Subject> subjects = await subjectService.getSubjects(user);
+      if (subjects.isEmpty) {
+        throw SubjectException.subjectNotFound;
+      }
+      _subjects = subjects;
+      notifyListeners();
+    } catch (e) {
+      rethrow;
     }
-    _subjects = subjects;
-    notifyListeners();
-    return true;
   }
 }
