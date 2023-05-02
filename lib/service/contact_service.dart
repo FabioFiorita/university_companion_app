@@ -1,24 +1,20 @@
 import 'dart:convert';
 
 import 'package:c317_mobile/exceptions/contact_exception.dart';
-import 'package:c317_mobile/exceptions/subject_exception.dart';
-import 'package:c317_mobile/exceptions/user_exception.dart';
-import 'package:c317_mobile/models/subject.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/general_exception.dart';
 import '../http/web_client.dart';
 import '../models/contact.dart';
-import '../models/user.dart';
 
 class ContactService {
   http.Client client = WebClient().client;
 
-  Future<List<Contact>> getContacts(User user) async {
+  Future<List<Contact>> getContacts() async {
     try {
       http.Response response = await client
           .get(
-            Uri.parse("${WebClient.baseUrl}users/${user.id}/contacts"),
+            Uri.parse("${WebClient.baseUrl}contacts"),
           )
           .timeout(const Duration(seconds: 5));
 
