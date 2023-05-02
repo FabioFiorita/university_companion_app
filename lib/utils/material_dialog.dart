@@ -4,7 +4,9 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 class MaterialDialog {
   static void showMaterialDialog(
-      BuildContext context, String title, String message) {
+      {required BuildContext context,
+      required String title,
+      required String message}) {
     Dialogs.materialDialog(
         context: context,
         title: title,
