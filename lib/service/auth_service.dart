@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:c317_mobile/exceptions/general_exception.dart';
 import 'package:http/http.dart' as http;
 
 import '../http/web_client.dart';
 import '../models/user.dart';
-import '../exceptions/login_exception.dart';
+import '../exceptions/user_exception.dart';
 
 class AuthService {
   http.Client client = WebClient().client;
@@ -41,20 +42,20 @@ class AuthService {
         break;
       case 400:
         if (response.body.toLowerCase().contains("email")) {
-          throw LoginException.invalidEmail;
+          throw UserException.invalidEmail;
         } else if (response.body.toLowerCase().contains("password")) {
-          throw LoginException.wrongPassword;
+          throw UserException.wrongPassword;
         } else if (response.body.toLowerCase().contains("user")) {
-          throw LoginException.userNotFound;
+          throw UserException.userNotFound;
         } else {
-          throw LoginException.undefined;
+          throw GeneralException.undefined;
         }
       case 404:
-        throw LoginException.userNotFound;
+        throw UserException.userNotFound;
       case 429:
-        throw LoginException.tooManyRequests;
+        throw GeneralException.tooManyRequests;
       default:
-        throw LoginException.undefined;
+        throw GeneralException.undefined;
     }
   }
 }
