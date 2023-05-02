@@ -1,11 +1,13 @@
+import 'package:c317_mobile/components/error_body.dart';
+import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/providers/subjects_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
-import 'package:c317_mobile/service/subject_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/grades/subject_card.dart';
-import '../../models/subject.dart';
+import '../../exceptions/subject_exception.dart';
+import '../../utils/material_dialog.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);
@@ -30,21 +32,19 @@ class SubjectListScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall,
             ),
             Expanded(
-              child: FutureBuilder<bool>(
+              child: FutureBuilder<void>(
                 future: subjectProvider.getSubjects(userProvider.user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data == false || snapshot.hasError) {
-                      return const Center(
-                        child: Text('Erro ao carregar as matérias'),
-                      );
+                    if (snapshot.hasError) {
+                      return _handleError(snapshot.error);
                     }
                     final subjects = subjectProvider.subjects;
                     return ListView.builder(
                       itemCount: subjects.length,
                       itemBuilder: (context, index) {
                         return SubjectCard(
-                          subject: subjects[index].code,
+                          subject: subjects[index].name,
                         );
                       },
                     );
@@ -60,5 +60,24 @@ class SubjectListScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _handleError(Object? error) {
+    if (error is UserException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else if (error is SubjectException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else {
+      return const ErrorBody(
+        title: 'Erro',
+        message: 'Erro desconhecido',
+      );
+    }
   }
 }
