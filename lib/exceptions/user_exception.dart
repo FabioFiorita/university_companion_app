@@ -1,4 +1,4 @@
-enum LoginException implements Exception {
+enum UserException implements Exception {
   invalidEmail(
       title: "E-mail inválido", message: "Verifique o endereço de e-mail."),
   weakPassword(
@@ -8,11 +8,11 @@ enum LoginException implements Exception {
       title: "Senha incorreta", message: "Verifique a senha digitada."),
   userNotFound(
       title: "Usuário não encontrado", message: "Verifique o e-mail digitado."),
-  tooManyRequests(
-      title: "Muitas requisições", message: "Tente novamente mais tarde."),
-  undefined(title: "Erro desconhecido", message: "Tente novamente mais tarde.");
+  sessionExpired(
+      title: "Sessão expirada",
+      message: "Faça login novamente para continuar.");
 
-  const LoginException({required this.title, required this.message});
+  const UserException({required this.title, required this.message});
 
   final String title;
   final String message;
