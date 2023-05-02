@@ -1,6 +1,12 @@
+import 'package:c317_mobile/exceptions/contact_exception.dart';
+import 'package:c317_mobile/exceptions/teacher_exception.dart';
+import 'package:c317_mobile/providers/teacher_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../components/error_body.dart';
 import '../components/information_card.dart';
+import '../providers/contact_provider.dart';
 
 class InformationListScreen extends StatelessWidget {
   final String title;
@@ -16,6 +22,10 @@ class InformationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ContactProvider contactProvider =
+        Provider.of<ContactProvider>(context, listen: false);
+    TeacherProvider teacherProvider =
+        Provider.of<TeacherProvider>(context, listen: false);
     const List<Widget> mockTeacherList = [
       InformationCard(
         title: 'Renzo Mesquita',
@@ -58,13 +68,56 @@ class InformationListScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall,
             ),
             Expanded(
-              child: ListView(
-                children: isTeacherList ? mockTeacherList : mockCollegePhones,
-              ),
-            ),
+                child: FutureBuilder<void>(
+              future: isTeacherList
+                  ? teacherProvider.getTeachers()
+                  : contactProvider.getContacts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return _handleError(snapshot.error);
+                  }
+                  return ListView.builder(
+                    itemCount: isTeacherList
+                        ? teacherProvider.teachers.length
+                        : contactProvider.contacts.length,
+                    itemBuilder: (context, index) {
+                      return InformationCard(
+                        title: isTeacherList
+                            ? teacherProvider.teachers[index].name
+                            : contactProvider.contacts[index].area,
+                        subtitle: isTeacherList
+                            ? teacherProvider.teachers[index].email
+                            : contactProvider.contacts[index].number,
+                      );
+                    },
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )),
           ],
         ),
       ),
     );
+  }
+
+  Widget _handleError(Object? error) {
+    if (error is ContactException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else if (error is TeacherException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else {
+      return const ErrorBody();
+    }
   }
 }
