@@ -62,12 +62,12 @@ class SubjectListScreen extends StatelessWidget {
   }
 
   Widget _handleError(Object? error) {
-    if (error is UserException) {
+    if (error is SubjectException) {
       return ErrorBody(
         title: error.title,
         message: error.message,
       );
-    } else if (error is SubjectException) {
+    } else if (error is UserException) {
       return ErrorBody(
         title: error.title,
         message: error.message,
