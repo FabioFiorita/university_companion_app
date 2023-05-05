@@ -26,34 +26,6 @@ class InformationListScreen extends StatelessWidget {
         Provider.of<ContactProvider>(context, listen: false);
     TeacherProvider teacherProvider =
         Provider.of<TeacherProvider>(context, listen: false);
-    const List<Widget> mockTeacherList = [
-      InformationCard(
-        title: 'Renzo Mesquita',
-        subtitle: 'renzo@inatel.br',
-      ),
-      InformationCard(
-        title: 'Chris Lima',
-        subtitle: 'chris@inatel.br',
-      ),
-      InformationCard(
-        title: 'Marcelo',
-        subtitle: 'marcelo@inatel.br',
-      ),
-    ];
-    const List<Widget> mockCollegePhones = [
-      InformationCard(
-        title: 'CRA',
-        subtitle: '(35) 3921-3123',
-      ),
-      InformationCard(
-        title: 'Tesouraria',
-        subtitle: '(35) 3921-3124',
-      ),
-      InformationCard(
-        title: 'RH',
-        subtitle: '(35) 3921-3125',
-      ),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -68,37 +40,37 @@ class InformationListScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall,
             ),
             Expanded(
-                child: FutureBuilder<void>(
-              future: isTeacherList
-                  ? teacherProvider.getTeachers()
-                  : contactProvider.getContacts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return _handleError(snapshot.error);
+              child: FutureBuilder<void>(
+                future: isTeacherList
+                    ? teacherProvider.getTeachers()
+                    : contactProvider.getContacts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return _handleError(snapshot.error);
+                    }
+                    return ListView.builder(
+                      itemCount: isTeacherList
+                          ? teacherProvider.teachers.length
+                          : contactProvider.contacts.length,
+                      itemBuilder: (context, index) {
+                        return InformationCard(
+                          title: isTeacherList
+                              ? teacherProvider.teachers[index].name
+                              : contactProvider.contacts[index].area,
+                          subtitle: isTeacherList
+                              ? teacherProvider.teachers[index].email
+                              : contactProvider.contacts[index].number,
+                        );
+                      },
+                    );
                   }
-                  return ListView.builder(
-                    itemCount: isTeacherList
-                        ? teacherProvider.teachers.length
-                        : contactProvider.contacts.length,
-                    itemBuilder: (context, index) {
-                      return InformationCard(
-                        title: isTeacherList
-                            ? teacherProvider.teachers[index].name
-                            : contactProvider.contacts[index].area,
-                        subtitle: isTeacherList
-                            ? teacherProvider.teachers[index].email
-                            : contactProvider.contacts[index].number,
-                      );
-                    },
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            )),
+                },
+              ),
+            ),
           ],
         ),
       ),
