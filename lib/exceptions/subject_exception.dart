@@ -1,6 +1,6 @@
 enum SubjectException implements Exception {
   subjectNotFound(
-      title: "Matéria não encontrada",
+      title: "Matérias não encontradas",
       message: "Ocorreu um erro ao buscar as matérias.");
 
   const SubjectException({required this.title, required this.message});
