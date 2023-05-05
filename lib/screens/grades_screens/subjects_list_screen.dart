@@ -1,7 +1,6 @@
 import 'package:c317_mobile/components/error_body.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +12,6 @@ class SubjectListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
     final SubjectProvider subjectProvider =
         Provider.of<SubjectProvider>(context, listen: false);
     return Scaffold(
@@ -32,7 +29,7 @@ class SubjectListScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder<void>(
-                future: subjectProvider.getSubjects(userProvider.user),
+                future: subjectProvider.getSubjects(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
