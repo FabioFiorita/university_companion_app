@@ -1,16 +1,17 @@
 import 'dart:convert';
 
 import 'package:c317_mobile/exceptions/subject_exception.dart';
-import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/models/subject.dart';
+import 'package:c317_mobile/service/teacher_service.dart';
 import 'package:http/http.dart' as http;
 
-import '../exceptions/general_exception.dart';
 import '../http/web_client.dart';
 import '../models/user.dart';
+import '../utils/response_handler.dart';
 
 class SubjectService {
   http.Client client = WebClient().client;
+  final TeacherService teacherService = TeacherService();
 
   Future<List<Subject>> getSubjects(User user) async {
     try {
@@ -25,7 +26,8 @@ class SubjectService {
       // }).timeout(const Duration(seconds: 5));
 
       if (response.statusCode != 200) {
-        _handleStatusCode(response);
+        ResponseHandler.handleStatusCode(
+            response.statusCode, SubjectException.subjectNotFound);
       }
 
       return saveInfoFromResponse(response.body);
@@ -34,30 +36,38 @@ class SubjectService {
     }
   }
 
-  Future<List<Subject>> saveInfoFromResponse(String body) async {
-    final List<Subject> subjects = json
-        .decode(body)
-        .map<Subject>((subject) => Subject.fromJson(subject))
-        .toList();
+  Future<Subject> getSubjectById(int id, User user) async {
+    try {
+      http.Response response = await client
+          .get(Uri.parse("${WebClient.baseUrl}subjects/$id"), headers: {
+        "Authorization": "Bearer ${user.accessToken}",
+      }).timeout(const Duration(seconds: 5));
 
-    return subjects;
+      if (response.statusCode != 200) {
+        ResponseHandler.handleStatusCode(
+            response.statusCode, SubjectException.subjectNotFound);
+      }
+
+      final jsonResponse = jsonDecode(response.body);
+
+      return Subject.fromJson(jsonResponse,
+          await teacherService.getTeacherById(jsonResponse['teacherId']));
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  void _handleStatusCode(http.Response response) {
-    switch (response.statusCode) {
-      case 200:
-        // success
-        break;
-      case 400:
-        throw GeneralException.undefined;
-      case 401:
-        throw UserException.sessionExpired;
-      case 404:
-        throw SubjectException.subjectNotFound;
-      case 429:
-        throw GeneralException.tooManyRequests;
-      default:
-        throw GeneralException.undefined;
+  Future<List<Subject>> saveInfoFromResponse(String body) async {
+    final List<dynamic> decodedJson = jsonDecode(body);
+    final List<Subject> subjects = [];
+
+    for (final subject in decodedJson) {
+      final teacherId = subject['teacherId'];
+      final teacher = await teacherService.getTeacherById(teacherId);
+      final newSubject = Subject.fromJson(subject, teacher);
+      subjects.add(newSubject);
     }
+
+    return subjects;
   }
 }
