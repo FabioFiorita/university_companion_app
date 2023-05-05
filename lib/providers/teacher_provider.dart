@@ -10,6 +10,9 @@ class TeacherProvider extends ChangeNotifier {
   List<Teacher> get teachers => _teachers;
 
   Future<void> getTeachers() async {
+    if (_teachers.isNotEmpty) {
+      return;
+    }
     final TeacherService teacherService = TeacherService();
     try {
       final List<Teacher> teachers = await teacherService.getTeachers();
