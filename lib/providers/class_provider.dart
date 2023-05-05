@@ -12,6 +12,9 @@ class ClassProvider extends ChangeNotifier {
   List<Class> get classes => _classes;
 
   Future<void> getClasses(User? user) async {
+    if (_classes.isNotEmpty) {
+      return;
+    }
     if (user == null) {
       throw UserException.userNotFound;
     }
