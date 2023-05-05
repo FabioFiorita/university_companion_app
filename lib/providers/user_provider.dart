@@ -25,6 +25,7 @@ class UserProvider extends ChangeNotifier {
     _prefs.setString("name", user.name);
     _prefs.setString("course", user.course);
     _prefs.setString("enrollmentNumber", user.enrollmentNumber);
+    setLastLoginTimestamp();
   }
 
   Future<void> login(String email, String password) async {
@@ -45,9 +46,17 @@ class UserProvider extends ChangeNotifier {
     _prefs.remove("name");
     _prefs.remove("course");
     _prefs.remove("enrollmentNumber");
+    _prefs.remove("lastLoginTimestamp");
   }
 
   Future<void> initUser() async {
+    final int? lastLoginTimestamp = _prefs.getInt("lastLoginTimestamp");
+    if (lastLoginTimestamp != null) {
+      if (DateTime.now().millisecondsSinceEpoch - lastLoginTimestamp >
+          3600000) {
+        clearUser();
+      }
+    }
     User user = User(
       id: int.parse(_prefs.getString("id") ?? '0'),
       email: _prefs.getString("email") ?? '',
@@ -61,5 +70,9 @@ class UserProvider extends ChangeNotifier {
     } else {
       _user = null;
     }
+  }
+
+  Future<void> setLastLoginTimestamp() async {
+    _prefs.setInt("lastLoginTimestamp", DateTime.now().millisecondsSinceEpoch);
   }
 }
