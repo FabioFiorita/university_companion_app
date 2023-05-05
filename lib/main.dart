@@ -1,4 +1,6 @@
+import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:c317_mobile/providers/contact_provider.dart';
+import 'package:c317_mobile/providers/grade_provider.dart';
 import 'package:c317_mobile/providers/profile_picture_provider.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:c317_mobile/providers/teacher_provider.dart';
@@ -28,6 +30,12 @@ void main() async {
       ),
       ChangeNotifierProvider<TeacherProvider>(
         create: (_) => TeacherProvider(),
+      ),
+      ChangeNotifierProvider<ClassProvider>(
+        create: (_) => ClassProvider(),
+      ),
+      ChangeNotifierProvider<GradeProvider>(
+        create: (_) => GradeProvider(),
       ),
     ],
     child: const MyApp(),
