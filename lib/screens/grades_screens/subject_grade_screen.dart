@@ -4,7 +4,6 @@ import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
 import 'package:c317_mobile/components/grades/grade_card.dart';
 import 'package:c317_mobile/exceptions/grade_exception.dart';
 import 'package:c317_mobile/providers/grade_provider.dart';
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -177,8 +176,7 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
   mapGrades() async {
     GradeProvider gradeProvider =
         Provider.of<GradeProvider>(context, listen: false);
-    await gradeProvider
-        .getGrades(Provider.of<UserProvider>(context, listen: false).user);
+    await gradeProvider.getGrades();
     for (var element in gradeProvider.grades) {
       if (element.subject.name == widget.subject) {
         grades.addEntries(
