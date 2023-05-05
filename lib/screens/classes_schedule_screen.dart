@@ -32,7 +32,7 @@ class ClassesScheduleScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder<void>(
-                future: classProvider.getClasses(userProvider.user),
+                future: classProvider.getClasses(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
