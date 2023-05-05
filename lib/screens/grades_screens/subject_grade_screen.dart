@@ -2,10 +2,14 @@ import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/grades/average_card.dart';
 import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
 import 'package:c317_mobile/components/grades/grade_card.dart';
+import 'package:c317_mobile/exceptions/grade_exception.dart';
 import 'package:c317_mobile/providers/grade_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../components/error_body.dart';
+import '../../exceptions/user_exception.dart';
 
 class SubjectGradeScreen extends StatefulWidget {
   final String subject;
@@ -74,8 +78,15 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Erro ao carregar as notas"),
+                    return SliverToBoxAdapter(
+                        child: _handleError(snapshot.error));
+                  }
+                  if (grades.isEmpty) {
+                    return const SliverToBoxAdapter(
+                      child: ErrorBody(
+                        title: 'Sem notas',
+                        message: 'Nenhuma nota cadastrada',
+                      ),
                     );
                   }
                   return SliverList(
@@ -176,6 +187,22 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
           ],
         );
       }
+    }
+  }
+
+  Widget _handleError(Object? error) {
+    if (error is GradeException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else if (error is UserException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else {
+      return const ErrorBody();
     }
   }
 }
