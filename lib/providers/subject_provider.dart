@@ -1,6 +1,7 @@
 import 'package:c317_mobile/exceptions/subject_exception.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/models/subject.dart';
+import 'package:c317_mobile/models/teacher.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';
