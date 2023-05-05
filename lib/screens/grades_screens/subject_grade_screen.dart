@@ -2,7 +2,10 @@ import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/grades/average_card.dart';
 import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
 import 'package:c317_mobile/components/grades/grade_card.dart';
+import 'package:c317_mobile/providers/grade_provider.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SubjectGradeScreen extends StatefulWidget {
   final String subject;
@@ -14,11 +17,10 @@ class SubjectGradeScreen extends StatefulWidget {
 }
 
 class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
-  Map<String, int?> grades = {'NP1': 80, 'NP2': 50, 'NP3': 10, 'NPL': 90};
-
   final TextEditingController gradeNameController = TextEditingController();
   final TextEditingController gradeValueController = TextEditingController();
   bool isSimulating = false;
+  Map<String, int> grades = {};
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
                     setState(
                       () {
                         isSimulating = !isSimulating;
-                        grades = {'NP1': 80, 'NP2': 50, 'NP3': 10, 'NPL': 90};
+                        grades = mapGrades();
                       },
                     );
                   },
@@ -54,19 +56,37 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
             const SliverToBoxAdapter(
               child: Text('Notas'),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: GradeCard(
-                      exam: grades.keys.elementAt(index),
-                      grade: grades.values.elementAt(index),
+            FutureBuilder<void>(
+              future: mapGrades(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Erro ao carregar as notas"),
+                    );
+                  }
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: GradeCard(
+                            exam: grades.keys.elementAt(index),
+                            grade: grades.values.elementAt(index),
+                          ),
+                        );
+                      },
+                      childCount: grades.length,
                     ),
                   );
-                },
-                childCount: grades.length,
-              ),
+                } else {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -123,6 +143,25 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
   }
 
   int getAverage() {
-    return grades.values.reduce((a, b) => a! + b!)! ~/ grades.length;
+    if (grades.isEmpty) {
+      return 0;
+    }
+    return (grades.values.reduce((a, b) => a + b) / grades.length).round();
+  }
+
+  mapGrades() async {
+    GradeProvider gradeProvider =
+        Provider.of<GradeProvider>(context, listen: false);
+    await gradeProvider
+        .getGrades(Provider.of<UserProvider>(context, listen: false).user);
+    for (var element in gradeProvider.grades) {
+      if (element.subject.name == widget.subject) {
+        grades.addEntries(
+          [
+            MapEntry(element.code, element.grade),
+          ],
+        );
+      }
+    }
   }
 }
