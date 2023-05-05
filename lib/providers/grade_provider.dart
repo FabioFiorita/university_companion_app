@@ -11,7 +11,11 @@ class GradeProvider extends ChangeNotifier {
 
   List<Grade> get grades => _grades;
 
-  Future<void> getGrades(User? user) async {
+  final User? user;
+
+  GradeProvider(this.user);
+
+  Future<void> getGrades() async {
     if (_grades.isNotEmpty) {
       return;
     }
@@ -20,7 +24,7 @@ class GradeProvider extends ChangeNotifier {
     }
     final GradeService gradeService = GradeService();
     try {
-      final List<Grade> grades = await gradeService.getGrades(user);
+      final List<Grade> grades = await gradeService.getGrades(user!);
       if (grades.isEmpty) {
         throw GradeException.gradeNotFound;
       }
