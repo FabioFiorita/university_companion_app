@@ -11,16 +11,23 @@ class SubjectProvider extends ChangeNotifier {
 
   List<Subject> get subjects => _subjects;
 
-  Future<void> getSubjects(User? user) async {
+  final User? user;
+
+  SubjectProvider(this.user) {
+    getSubjects();
+  }
+
+  Future<void> getSubjects() async {
     if (_subjects.isNotEmpty) {
       return;
     }
     if (user == null) {
+      print('User is null');
       throw UserException.userNotFound;
     }
     final SubjectService subjectService = SubjectService();
     try {
-      final List<Subject> subjects = await subjectService.getSubjects(user);
+      final List<Subject> subjects = await subjectService.getSubjects(user!);
       if (subjects.isEmpty) {
         throw SubjectException.subjectNotFound;
       }
@@ -31,9 +38,9 @@ class SubjectProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> resetCache(User? user) async {
+  Future<void> resetCache() async {
     _subjects = [];
-    await getSubjects(user);
+    await getSubjects();
     notifyListeners();
   }
 }
