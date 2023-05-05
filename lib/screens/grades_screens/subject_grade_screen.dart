@@ -33,7 +33,20 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: AverageCard(grade: getAverage()),
+              child: FutureBuilder<int>(
+                  future: getAverage(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return const AverageCard(grade: 0);
+                      }
+                      return AverageCard(grade: snapshot.data!);
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -142,7 +155,8 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
     );
   }
 
-  int getAverage() {
+  Future<int> getAverage() async {
+    await mapGrades();
     if (grades.isEmpty) {
       return 0;
     }
