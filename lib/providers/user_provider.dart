@@ -26,6 +26,7 @@ class UserProvider extends ChangeNotifier {
     _prefs.setString("course", user.course);
     _prefs.setString("enrollmentNumber", user.enrollmentNumber);
     setLastLoginTimestamp();
+    notifyListeners();
   }
 
   Future<void> login(String email, String password) async {
@@ -33,6 +34,7 @@ class UserProvider extends ChangeNotifier {
     try {
       final User user = await authService.login(email, password);
       setUser(user);
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
@@ -40,6 +42,7 @@ class UserProvider extends ChangeNotifier {
 
   clearUser() {
     _user = null;
+    notifyListeners();
     _prefs.remove("accessToken");
     _prefs.remove("id");
     _prefs.remove("email");
@@ -70,6 +73,7 @@ class UserProvider extends ChangeNotifier {
     } else {
       _user = null;
     }
+    notifyListeners();
   }
 
   Future<void> setLastLoginTimestamp() async {
