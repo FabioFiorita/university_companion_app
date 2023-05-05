@@ -1,7 +1,6 @@
 import 'package:c317_mobile/exceptions/subject_exception.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/models/subject.dart';
-import 'package:c317_mobile/models/teacher.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';
@@ -13,6 +12,9 @@ class SubjectProvider extends ChangeNotifier {
   List<Subject> get subjects => _subjects;
 
   Future<void> getSubjects(User? user) async {
+    if (_subjects.isNotEmpty) {
+      return;
+    }
     if (user == null) {
       throw UserException.userNotFound;
     }
@@ -27,5 +29,11 @@ class SubjectProvider extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> resetCache(User? user) async {
+    _subjects = [];
+    await getSubjects(user);
+    notifyListeners();
   }
 }
