@@ -22,20 +22,26 @@ void main() async {
       ChangeNotifierProvider<UserProvider>(
         create: (_) => UserProvider(prefs),
       ),
-      ChangeNotifierProvider<SubjectProvider>(
-        create: (_) => SubjectProvider(),
+      ChangeNotifierProxyProvider<UserProvider, SubjectProvider>(
+        update: (context, userProvider, previousSubject) =>
+            SubjectProvider(userProvider.user),
+        create: (BuildContext context) => SubjectProvider(null),
+      ),
+      ChangeNotifierProxyProvider<UserProvider, GradeProvider>(
+        update: (context, userProvider, previousGrade) =>
+            GradeProvider(userProvider.user),
+        create: (BuildContext context) => GradeProvider(null),
+      ),
+      ChangeNotifierProxyProvider<UserProvider, ClassProvider>(
+        update: (context, userProvider, previousGrade) =>
+            ClassProvider(userProvider.user),
+        create: (BuildContext context) => ClassProvider(null),
       ),
       ChangeNotifierProvider<ContactProvider>(
         create: (_) => ContactProvider(),
       ),
       ChangeNotifierProvider<TeacherProvider>(
         create: (_) => TeacherProvider(),
-      ),
-      ChangeNotifierProvider<ClassProvider>(
-        create: (_) => ClassProvider(),
-      ),
-      ChangeNotifierProvider<GradeProvider>(
-        create: (_) => GradeProvider(),
       ),
     ],
     child: const MyApp(),
