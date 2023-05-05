@@ -1,6 +1,6 @@
 enum TeacherException implements Exception {
   teacherNotFound(
-      title: "Professor não encontrado",
+      title: "Professores não encontrados",
       message: "Ocorreu um erro ao buscar os professores.");
 
   const TeacherException({required this.title, required this.message});
