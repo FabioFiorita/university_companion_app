@@ -12,6 +12,9 @@ class GradeProvider extends ChangeNotifier {
   List<Grade> get grades => _grades;
 
   Future<void> getGrades(User? user) async {
+    if (_grades.isNotEmpty) {
+      return;
+    }
     if (user == null) {
       throw UserException.userNotFound;
     }
