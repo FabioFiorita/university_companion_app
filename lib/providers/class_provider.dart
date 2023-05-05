@@ -11,7 +11,11 @@ class ClassProvider extends ChangeNotifier {
 
   List<Class> get classes => _classes;
 
-  Future<void> getClasses(User? user) async {
+  final User? user;
+
+  ClassProvider(this.user);
+
+  Future<void> getClasses() async {
     if (_classes.isNotEmpty) {
       return;
     }
@@ -20,7 +24,7 @@ class ClassProvider extends ChangeNotifier {
     }
     final ClassService classService = ClassService();
     try {
-      final List<Class> classes = await classService.getClasses(user);
+      final List<Class> classes = await classService.getClasses(user!);
       if (classes.isEmpty) {
         throw ClassException.classNotFound;
       }
