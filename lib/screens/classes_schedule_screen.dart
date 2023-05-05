@@ -1,9 +1,12 @@
+import 'package:c317_mobile/exceptions/class_exception.dart';
+import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components/class_card.dart';
+import '../components/error_body.dart';
 
 class ClassesScheduleScreen extends StatelessWidget {
   const ClassesScheduleScreen({Key? key}) : super(key: key);
@@ -33,9 +36,7 @@ class ClassesScheduleScreen extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('Erro ao carregar as aulas'),
-                      );
+                      return _handleError(snapshot.error);
                     }
                     final classes = classProvider.classes;
                     return ListView.builder(
@@ -60,5 +61,21 @@ class ClassesScheduleScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _handleError(Object? error) {
+    if (error is ClassException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else if (error is UserException) {
+      return ErrorBody(
+        title: error.title,
+        message: error.message,
+      );
+    } else {
+      return const ErrorBody();
+    }
   }
 }
