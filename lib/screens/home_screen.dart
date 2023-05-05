@@ -1,5 +1,8 @@
 import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
+import 'package:c317_mobile/models/class.dart';
+import 'package:c317_mobile/providers/class_provider.dart';
+import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +17,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
+    final ClassProvider classProvider =
+        Provider.of<ClassProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -45,8 +50,30 @@ class HomeScreen extends StatelessWidget {
               child: Text('Sua próxima aula é',
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
-            ClassCard(
-                subject: 'C317', date: 'Sexta-Feira - 19:30', location: 'I-15'),
+            FutureBuilder<void>(
+              future: classProvider.getClasses(userProvider.user),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return const Text('Erro ao carregar aula');
+                  }
+                  final classes = classProvider.classes;
+                  if (classes.isEmpty) {
+                    return const Text('Nenhuma aula encontrada');
+                  }
+                  final nextClass = classes.first;
+                  return ClassCard(
+                    subject: nextClass.subject.name,
+                    date: nextClass.date,
+                    location: nextClass.location,
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
               child: ActionCard(
