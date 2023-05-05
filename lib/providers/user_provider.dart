@@ -1,4 +1,4 @@
-import 'package:c317_mobile/service/auth_service.dart';
+import 'package:c317_mobile/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +28,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    AuthService authService = AuthService();
+    UserService authService = UserService();
     try {
       final User user = await authService.login(email, password);
       setUser(user);
