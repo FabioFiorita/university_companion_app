@@ -13,7 +13,9 @@ class ClassProvider extends ChangeNotifier {
 
   final User? user;
 
-  ClassProvider(this.user);
+  ClassProvider(this.user) {
+    getClasses();
+  }
 
   Future<void> getClasses() async {
     if (_classes.isNotEmpty) {
@@ -33,5 +35,10 @@ class ClassProvider extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  cleanClasses() {
+    _classes = [];
+    notifyListeners();
   }
 }
