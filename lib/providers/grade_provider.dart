@@ -13,7 +13,9 @@ class GradeProvider extends ChangeNotifier {
 
   final User? user;
 
-  GradeProvider(this.user);
+  GradeProvider(this.user) {
+    getGrades();
+  }
 
   Future<void> getGrades() async {
     if (_grades.isNotEmpty) {
