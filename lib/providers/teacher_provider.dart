@@ -9,6 +9,10 @@ class TeacherProvider extends ChangeNotifier {
 
   List<Teacher> get teachers => _teachers;
 
+  TeacherProvider() {
+    getTeachers();
+  }
+
   Future<void> getTeachers() async {
     if (_teachers.isNotEmpty) {
       return;
