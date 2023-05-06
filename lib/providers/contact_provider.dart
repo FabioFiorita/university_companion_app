@@ -9,6 +9,10 @@ class ContactProvider extends ChangeNotifier {
 
   List<Contact> get contacts => _contacts;
 
+  ContactProvider() {
+    getContacts();
+  }
+
   Future<void> getContacts() async {
     if (_contacts.isNotEmpty) {
       return;
