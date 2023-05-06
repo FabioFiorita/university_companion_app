@@ -13,10 +13,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
-    final ClassProvider classProvider =
-        Provider.of<ClassProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24.0, 56.0, 24.0, 24.0),
@@ -28,50 +24,51 @@ class HomeScreen extends StatelessWidget {
               'Bem vindo(a)',
               style: Theme.of(context).textTheme.displaySmall,
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text(
-                    userProvider.user?.name ?? '',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                ),
-                Icon(Icons.waving_hand,
-                    color: Theme.of(context).colorScheme.primary),
-              ],
-            ),
-            FutureBuilder<void>(
-              future: classProvider.getClasses(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return const SizedBox();
-                  }
-                  final classes = classProvider.classes;
-                  final nextClass = classes.first;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                        child: Text('Sua próxima aula é',
-                            style: Theme.of(context).textTheme.bodyMedium),
-                      ),
-                      ClassCard(
-                        subject: nextClass.subject.name,
-                        date: nextClass.date,
-                        location: nextClass.location,
-                      ),
-                    ],
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+            Consumer<UserProvider>(
+              builder: (providerContext, userProvider, child) {
+                if (userProvider.user == null) {
+                  return const SizedBox();
                 }
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        userProvider.user?.name ?? '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ),
+                    Icon(Icons.waving_hand,
+                        color: Theme.of(context).colorScheme.primary),
+                  ],
+                );
+              },
+            ),
+            Consumer<ClassProvider>(
+              builder: (providerContext, classProvider, child) {
+                if (classProvider.classes.isEmpty) {
+                  return const SizedBox();
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                      child: Text('Sua próxima aula é',
+                          style: Theme.of(context).textTheme.bodyMedium),
+                    ),
+                    ClassCard(
+                      subject: classProvider.classes.first.subject.name,
+                      date: classProvider.classes.first.date,
+                      location: classProvider.classes.first.location,
+                    ),
+                  ],
+                );
               },
             ),
             Padding(
