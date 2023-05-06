@@ -1,22 +1,20 @@
 import 'package:c317_mobile/exceptions/class_exception.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/providers/class_provider.dart';
-import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../components/class_card.dart';
 import '../components/error_body.dart';
 
 class ClassesScheduleScreen extends StatelessWidget {
-  const ClassesScheduleScreen({Key? key}) : super(key: key);
+  ClassesScheduleScreen({Key? key}) : super(key: key);
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
-    ClassProvider classProvider =
-        Provider.of<ClassProvider>(context, listen: false);
-    UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Horarios'),
@@ -30,32 +28,26 @@ class ClassesScheduleScreen extends StatelessWidget {
               'Minhas aulas',
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: FutureBuilder<void>(
-                future: classProvider.getClasses(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return _handleError(snapshot.error);
-                    }
-                    final classes = classProvider.classes;
-                    return ListView.builder(
-                      itemCount: classes.length,
-                      itemBuilder: (context, index) {
-                        return ClassCard(
-                          subject: classes[index].subject.name,
-                          date: classes[index].date,
-                          location: classes[index].location,
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+            Consumer<ClassProvider>(
+              builder: (_, store, __) {
+                final classes = store.classes;
+                if (classes.isEmpty) {
+                  return _handleError(ClassException.classNotFound);
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: classes.length,
+                    itemBuilder: (context, index) {
+                      return ClassCard(
+                        subject: classes[index].subject.name,
+                        date: classes[index].date,
+                        location: classes[index].location,
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
