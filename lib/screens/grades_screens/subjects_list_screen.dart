@@ -12,8 +12,6 @@ class SubjectListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SubjectProvider subjectProvider =
-        Provider.of<SubjectProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Materias'),
@@ -27,30 +25,24 @@ class SubjectListScreen extends StatelessWidget {
               'Matérias do semestre',
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: FutureBuilder<void>(
-                future: subjectProvider.getSubjects(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return _handleError(snapshot.error);
-                    }
-                    final subjects = subjectProvider.subjects;
-                    return ListView.builder(
-                      itemCount: subjects.length,
-                      itemBuilder: (context, index) {
-                        return SubjectCard(
-                          subject: subjects[index].name,
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+            Consumer<SubjectProvider>(
+              builder: (_, store, __) {
+                final subjects = store.subjects;
+                if (subjects.isEmpty) {
+                  return _handleError(SubjectException.subjectNotFound);
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: subjects.length,
+                    itemBuilder: (context, index) {
+                      return SubjectCard(
+                        subject: subjects[index].name,
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
