@@ -74,7 +74,7 @@ class AppRouter {
               path: '/classes',
               parentNavigatorKey: _shellKey,
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: ClassesScheduleScreen()),
+                  NoTransitionPage(child: ClassesScheduleScreen()),
             ),
             GoRoute(
                 path: '/subjects',
