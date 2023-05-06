@@ -1,12 +1,13 @@
-import 'package:c317_mobile/components/action_button.dart';
 import 'package:c317_mobile/components/grades/average_card.dart';
 import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
 import 'package:c317_mobile/components/grades/grade_card.dart';
 import 'package:c317_mobile/exceptions/grade_exception.dart';
+import 'package:c317_mobile/models/grade.dart';
 import 'package:c317_mobile/providers/grade_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/action_button.dart';
 import '../../components/error_body.dart';
 import '../../exceptions/user_exception.dart';
 
@@ -35,80 +36,65 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: FutureBuilder<int>(
-                  future: getAverage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return const AverageCard(grade: 0);
-                      }
-                      return AverageCard(grade: snapshot.data!);
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
-                child: ActionButton(
-                  text: (isSimulating == true) ? "Parar de simular" : 'Simular',
-                  color: Theme.of(context).primaryColor,
-                  textColor: Theme.of(context).canvasColor,
-                  onPressed: () {
-                    setState(
-                      () {
-                        isSimulating = !isSimulating;
-                        grades = mapGrades();
+            Consumer<GradeProvider>(builder: (_, store, __) {
+              if (store.grades.isEmpty) {
+                return const SliverToBoxAdapter(child: AverageCard(grade: 0));
+              }
+              return SliverToBoxAdapter(
+                  child: AverageCard(grade: getAverage(store.grades)));
+            }),
+            Consumer<GradeProvider>(
+              builder: (_, store, __) {
+                if (store.grades.isEmpty) {
+                  return const SliverToBoxAdapter(child: SizedBox());
+                }
+                return SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                    child: ActionButton(
+                      text: (isSimulating == true)
+                          ? "Parar de simular"
+                          : 'Simular',
+                      color: Theme.of(context).primaryColor,
+                      textColor: Theme.of(context).canvasColor,
+                      onPressed: () {
+                        setState(
+                          () {
+                            isSimulating = !isSimulating;
+                            // grades = mapGrades(store.grades);
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                );
+              },
             ),
             const SliverToBoxAdapter(
               child: Text('Notas'),
             ),
-            FutureBuilder<void>(
-              future: mapGrades(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return SliverToBoxAdapter(
-                        child: _handleError(snapshot.error));
-                  }
-                  if (grades.isEmpty) {
-                    return const SliverToBoxAdapter(
-                      child: ErrorBody(
-                        title: 'Sem notas',
-                        message: 'Nenhuma nota cadastrada',
-                      ),
-                    );
-                  }
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: GradeCard(
-                            exam: grades.keys.elementAt(index),
-                            grade: grades.values.elementAt(index),
-                          ),
-                        );
-                      },
-                      childCount: grades.length,
-                    ),
-                  );
-                } else {
-                  return const SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+            Consumer<GradeProvider>(
+              builder: (_, store, __) {
+                mapGrades(store.grades);
+                if (grades.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: _handleError(GradeException.gradeNotFound),
                   );
                 }
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: GradeCard(
+                          exam: grades.keys.elementAt(index),
+                          grade: grades.values.elementAt(index),
+                        ),
+                      );
+                    },
+                    childCount: grades.length,
+                  ),
+                );
               },
             ),
           ],
@@ -165,19 +151,16 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
     );
   }
 
-  Future<int> getAverage() async {
-    await mapGrades();
+  int getAverage(List<Grade> storeGrades) {
+    mapGrades(storeGrades);
     if (grades.isEmpty) {
       return 0;
     }
     return (grades.values.reduce((a, b) => a + b) / grades.length).round();
   }
 
-  mapGrades() async {
-    GradeProvider gradeProvider =
-        Provider.of<GradeProvider>(context, listen: false);
-    await gradeProvider.getGrades();
-    for (var element in gradeProvider.grades) {
+  mapGrades(List<Grade> storeGrades) {
+    for (var element in storeGrades) {
       if (element.subject.name == widget.subject) {
         grades.addEntries(
           [
