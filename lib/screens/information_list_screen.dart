@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../components/error_body.dart';
 import '../components/information_card.dart';
+import '../models/contact.dart';
+import '../models/teacher.dart';
 import '../providers/contact_provider.dart';
 
 class InformationListScreen extends StatelessWidget {
@@ -22,10 +24,6 @@ class InformationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ContactProvider contactProvider =
-        Provider.of<ContactProvider>(context, listen: false);
-    TeacherProvider teacherProvider =
-        Provider.of<TeacherProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -39,41 +37,56 @@ class InformationListScreen extends StatelessWidget {
               listLabel,
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: FutureBuilder<void>(
-                future: isTeacherList
-                    ? teacherProvider.getTeachers()
-                    : contactProvider.getContacts(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return _handleError(snapshot.error);
-                    }
-                    return ListView.builder(
-                      itemCount: isTeacherList
-                          ? teacherProvider.teachers.length
-                          : contactProvider.contacts.length,
-                      itemBuilder: (context, index) {
-                        return InformationCard(
-                          title: isTeacherList
-                              ? teacherProvider.teachers[index].name
-                              : contactProvider.contacts[index].area,
-                          subtitle: isTeacherList
-                              ? teacherProvider.teachers[index].email
-                              : contactProvider.contacts[index].number,
-                        );
+            (isTeacherList)
+                ? Expanded(
+                    child: Consumer<TeacherProvider>(
+                      builder: (_, store, __) {
+                        final teachers = store.teachers;
+                        if (teachers.isEmpty) {
+                          return _handleError(TeacherException.teacherNotFound);
+                        }
+                        return _teacherList(teachers);
                       },
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
+                    ),
+                  )
+                : Expanded(
+                    child: Consumer<ContactProvider>(
+                      builder: (_, store, __) {
+                        final contacts = store.contacts;
+                        if (contacts.isEmpty) {
+                          return _handleError(ContactException.contactNotFound);
+                        }
+                        return _contactList(contacts);
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _teacherList(List<Teacher> teachers) {
+    return ListView.builder(
+      itemCount: teachers.length,
+      itemBuilder: (context, index) {
+        return InformationCard(
+          title: teachers[index].name,
+          subtitle: teachers[index].email,
+        );
+      },
+    );
+  }
+
+  Widget _contactList(List<Contact> contacts) {
+    return ListView.builder(
+      itemCount: contacts.length,
+      itemBuilder: (context, index) {
+        return InformationCard(
+          title: contacts[index].area,
+          subtitle: contacts[index].number,
+        );
+      },
     );
   }
 
