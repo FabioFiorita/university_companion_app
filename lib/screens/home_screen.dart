@@ -1,5 +1,6 @@
 import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
+import 'package:c317_mobile/components/error_body.dart';
 import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../components/profile_picture.dart';
+import '../exceptions/class_exception.dart';
+import '../exceptions/user_exception.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -51,6 +54,12 @@ class HomeScreen extends StatelessWidget {
             ),
             Consumer<ClassProvider>(
               builder: (providerContext, classProvider, child) {
+                if (classProvider.hasError) {
+                  return const SizedBox();
+                }
+                if (classProvider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
                 if (classProvider.classes.isEmpty) {
                   return const SizedBox();
                 }
