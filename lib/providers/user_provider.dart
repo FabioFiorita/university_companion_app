@@ -13,6 +13,10 @@ class UserProvider extends ChangeNotifier {
 
   bool get isLoggedIn => _user != null;
 
+  bool _tokenExpired = false;
+
+  bool get tokenExpired => _tokenExpired;
+
   UserProvider(this._prefs) {
     initUser();
   }
@@ -55,9 +59,14 @@ class UserProvider extends ChangeNotifier {
   Future<void> initUser() async {
     final int? lastLoginTimestamp = _prefs.getInt("lastLoginTimestamp");
     if (lastLoginTimestamp != null) {
-      if (DateTime.now().millisecondsSinceEpoch - lastLoginTimestamp >
+      if (DateTime
+          .now()
+          .millisecondsSinceEpoch - lastLoginTimestamp >
           3600000) {
+        _tokenExpired = true;
         clearUser();
+        notifyListeners();
+        return;
       }
     }
     User user = User(
@@ -77,6 +86,8 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> setLastLoginTimestamp() async {
-    _prefs.setInt("lastLoginTimestamp", DateTime.now().millisecondsSinceEpoch);
+    _prefs.setInt("lastLoginTimestamp", DateTime
+        .now()
+        .millisecondsSinceEpoch);
   }
 }
