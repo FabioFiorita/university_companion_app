@@ -13,27 +13,42 @@ class ClassProvider extends ChangeNotifier {
 
   final User? user;
 
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  bool _hasError = false;
+
+  bool get hasError => _hasError;
+
   ClassProvider(this.user) {
     getClasses();
   }
 
   Future<void> getClasses() async {
-    if (_classes.isNotEmpty) {
-      return;
-    }
-    if (user == null) {
-      throw UserException.userNotFound;
-    }
-    final ClassService classService = ClassService();
     try {
+      _isLoading = true;
+      if (_classes.isNotEmpty) {
+        _isLoading = false;
+        return;
+      }
+      if (user == null) {
+        _isLoading = false;
+        throw UserException.userNotFound;
+      }
+      final ClassService classService = ClassService();
       final List<Class> classes = await classService.getClasses(user!);
       if (classes.isEmpty) {
+        _isLoading = false;
         throw ClassException.classNotFound;
       }
+      _isLoading = false;
       _classes = classes;
       notifyListeners();
     } catch (e) {
-      rethrow;
+      _hasError = true;
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
