@@ -39,6 +39,5 @@ class ClassProvider extends ChangeNotifier {
 
   cleanClasses() {
     _classes = [];
-    notifyListeners();
   }
 }
