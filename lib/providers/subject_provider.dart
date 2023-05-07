@@ -41,6 +41,5 @@ class SubjectProvider extends ChangeNotifier {
   Future<void> resetCache() async {
     _subjects = [];
     await getSubjects();
-    notifyListeners();
   }
 }
