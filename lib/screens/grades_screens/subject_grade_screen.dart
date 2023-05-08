@@ -1,15 +1,13 @@
+import 'package:c317_mobile/components/error_handler.dart';
 import 'package:c317_mobile/components/grades/average_card.dart';
 import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
 import 'package:c317_mobile/components/grades/grade_card.dart';
-import 'package:c317_mobile/exceptions/grade_exception.dart';
 import 'package:c317_mobile/models/grade.dart';
 import 'package:c317_mobile/providers/grade_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/action_button.dart';
-import '../../components/error_message.dart';
-import '../../exceptions/user_exception.dart';
 
 class SubjectGradeScreen extends StatefulWidget {
   final String subject;
@@ -75,12 +73,17 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
             ),
             Consumer<GradeProvider>(
               builder: (_, store, __) {
-                mapGrades(store.grades);
-                if (grades.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: _handleError(GradeException.gradeNotFound),
+                if (store.isLoading) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
+                if (store.error != null) {
+                  return SliverToBoxAdapter(
+                    child: ErrorHandler(error: store.error!),
+                  );
+                }
+                mapGrades(store.grades);
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -168,22 +171,6 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
           ],
         );
       }
-    }
-  }
-
-  Widget _handleError(Object? error) {
-    if (error is GradeException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else if (error is UserException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else {
-      return const ErrorMessage();
     }
   }
 }
