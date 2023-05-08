@@ -1,3 +1,4 @@
+import 'package:c317_mobile/exceptions/general_exception.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../exceptions/class_exception.dart';
@@ -17,9 +18,9 @@ class ClassProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  bool _hasError = false;
+  Object? _error;
 
-  bool get hasError => _hasError;
+  Object? get error => _error;
 
   ClassProvider(this.user) {
     getClasses();
@@ -46,7 +47,7 @@ class ClassProvider extends ChangeNotifier {
       _classes = classes;
       notifyListeners();
     } catch (e) {
-      _hasError = true;
+      _error = e;
       _isLoading = false;
       notifyListeners();
     }
