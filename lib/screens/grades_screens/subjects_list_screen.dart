@@ -1,11 +1,9 @@
-import 'package:c317_mobile/components/error_message.dart';
-import 'package:c317_mobile/exceptions/user_exception.dart';
+import 'package:c317_mobile/components/error_handler.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/grades/subject_card.dart';
-import '../../exceptions/subject_exception.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);
@@ -27,10 +25,15 @@ class SubjectListScreen extends StatelessWidget {
             ),
             Consumer<SubjectProvider>(
               builder: (_, store, __) {
-                final subjects = store.subjects;
-                if (subjects.isEmpty) {
-                  return _handleError(SubjectException.subjectNotFound);
+                if (store.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
+                if (store.error != null) {
+                  return ErrorHandler(error: store.error!);
+                }
+                final subjects = store.subjects;
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -48,21 +51,5 @@ class SubjectListScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _handleError(Object? error) {
-    if (error is SubjectException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else if (error is UserException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else {
-      return const ErrorMessage();
-    }
   }
 }
