@@ -9,24 +9,42 @@ class ContactProvider extends ChangeNotifier {
 
   List<Contact> get contacts => _contacts;
 
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  Object? _error;
+
+  Object? get error => _error;
+
   ContactProvider() {
     getContacts();
   }
 
   Future<void> getContacts() async {
+    _isLoading = true;
     if (_contacts.isNotEmpty) {
+      _isLoading = false;
       return;
     }
     final ContactService contactService = ContactService();
     try {
       final List<Contact> contacts = await contactService.getContacts();
+      _isLoading = false;
       if (contacts.isEmpty) {
         throw ContactException.contactNotFound;
       }
       _contacts = contacts;
       notifyListeners();
     } catch (e) {
-      rethrow;
+      _error = e;
+      _isLoading = false;
+      notifyListeners();
     }
+  }
+
+  Future<void> cleanCache() async {
+    _contacts = [];
+    await getContacts();
   }
 }
