@@ -1,10 +1,8 @@
-import 'package:c317_mobile/exceptions/contact_exception.dart';
-import 'package:c317_mobile/exceptions/teacher_exception.dart';
+import 'package:c317_mobile/components/error_handler.dart';
 import 'package:c317_mobile/providers/teacher_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/error_message.dart';
 import '../components/information_card.dart';
 import '../models/contact.dart';
 import '../models/teacher.dart';
@@ -41,10 +39,14 @@ class InformationListScreen extends StatelessWidget {
                 ? Expanded(
                     child: Consumer<TeacherProvider>(
                       builder: (_, store, __) {
-                        final teachers = store.teachers;
-                        if (teachers.isEmpty) {
-                          return _handleError(TeacherException.teacherNotFound);
+                        if (store.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
+                        if (store.error != null) {
+                          return ErrorHandler(error: store.error!);
+                        }
+                        final teachers = store.teachers;
                         return _teacherList(teachers);
                       },
                     ),
@@ -52,10 +54,14 @@ class InformationListScreen extends StatelessWidget {
                 : Expanded(
                     child: Consumer<ContactProvider>(
                       builder: (_, store, __) {
-                        final contacts = store.contacts;
-                        if (contacts.isEmpty) {
-                          return _handleError(ContactException.contactNotFound);
+                        if (store.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
+                        if (store.error != null) {
+                          return ErrorHandler(error: store.error!);
+                        }
+                        final contacts = store.contacts;
                         return _contactList(contacts);
                       },
                     ),
@@ -88,21 +94,5 @@ class InformationListScreen extends StatelessWidget {
         );
       },
     );
-  }
-
-  Widget _handleError(Object? error) {
-    if (error is ContactException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else if (error is TeacherException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else {
-      return const ErrorMessage();
-    }
   }
 }
