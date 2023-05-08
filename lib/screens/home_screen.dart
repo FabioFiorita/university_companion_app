@@ -51,13 +51,10 @@ class HomeScreen extends StatelessWidget {
             ),
             Consumer<ClassProvider>(
               builder: (providerContext, classProvider, child) {
-                if (classProvider.error != null) {
-                  return const SizedBox();
-                }
                 if (classProvider.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (classProvider.classes.isEmpty) {
+                if (classProvider.error != null) {
                   return const SizedBox();
                 }
                 return Column(
