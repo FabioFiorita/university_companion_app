@@ -13,32 +13,45 @@ class SubjectProvider extends ChangeNotifier {
 
   final User? user;
 
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  Object? _error;
+
+  Object? get error => _error;
+
   SubjectProvider(this.user) {
     getSubjects();
   }
 
   Future<void> getSubjects() async {
+    _isLoading = true;
     if (_subjects.isNotEmpty) {
+      _isLoading = false;
       return;
     }
     if (user == null) {
-      print('User is null');
+      _isLoading = false;
       throw UserException.userNotFound;
     }
     final SubjectService subjectService = SubjectService();
     try {
       final List<Subject> subjects = await subjectService.getSubjects(user!);
+      _isLoading = false;
       if (subjects.isEmpty) {
         throw SubjectException.subjectNotFound;
       }
       _subjects = subjects;
       notifyListeners();
     } catch (e) {
-      rethrow;
+      _error = e;
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
-  Future<void> resetCache() async {
+  Future<void> cleanCache() async {
     _subjects = [];
     await getSubjects();
   }
