@@ -1,4 +1,3 @@
-import 'package:c317_mobile/exceptions/general_exception.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../exceptions/class_exception.dart';
@@ -39,11 +38,10 @@ class ClassProvider extends ChangeNotifier {
       }
       final ClassService classService = ClassService();
       final List<Class> classes = await classService.getClasses(user!);
+      _isLoading = false;
       if (classes.isEmpty) {
-        _isLoading = false;
         throw ClassException.classNotFound;
       }
-      _isLoading = false;
       _classes = classes;
       notifyListeners();
     } catch (e) {
@@ -53,7 +51,8 @@ class ClassProvider extends ChangeNotifier {
     }
   }
 
-  cleanClasses() {
+  Future<void> cleanCache() async {
     _classes = [];
+    await getClasses();
   }
 }
