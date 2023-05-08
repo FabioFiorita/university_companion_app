@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/action_button.dart';
-import '../../components/error_body.dart';
+import '../../components/error_message.dart';
 import '../../exceptions/user_exception.dart';
 
 class SubjectGradeScreen extends StatefulWidget {
@@ -173,17 +173,17 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
 
   Widget _handleError(Object? error) {
     if (error is GradeException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else if (error is UserException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else {
-      return const ErrorBody();
+      return const ErrorMessage();
     }
   }
 }
