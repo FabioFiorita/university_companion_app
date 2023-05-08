@@ -4,7 +4,7 @@ import 'package:c317_mobile/providers/teacher_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/error_body.dart';
+import '../components/error_message.dart';
 import '../components/information_card.dart';
 import '../models/contact.dart';
 import '../models/teacher.dart';
@@ -92,17 +92,17 @@ class InformationListScreen extends StatelessWidget {
 
   Widget _handleError(Object? error) {
     if (error is ContactException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else if (error is TeacherException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else {
-      return const ErrorBody();
+      return const ErrorMessage();
     }
   }
 }
