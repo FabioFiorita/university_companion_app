@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../components/class_card.dart';
-import '../components/error_body.dart';
+import '../components/error_message.dart';
 
 class ClassesScheduleScreen extends StatelessWidget {
   ClassesScheduleScreen({Key? key}) : super(key: key);
@@ -57,17 +57,17 @@ class ClassesScheduleScreen extends StatelessWidget {
 
   Widget _handleError(Object? error) {
     if (error is ClassException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else if (error is UserException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else {
-      return const ErrorBody();
+      return const ErrorMessage();
     }
   }
 }
