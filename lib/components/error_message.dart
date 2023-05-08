@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ErrorBody extends StatelessWidget {
+class ErrorMessage extends StatelessWidget {
   final String? title;
   final String? message;
 
-  const ErrorBody({Key? key, this.title, this.message}) : super(key: key);
+  const ErrorMessage({Key? key, this.title, this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +14,26 @@ class ErrorBody extends StatelessWidget {
         children: [
           (title != null)
               ? Text(
-                  title!,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
+            title!,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headlineMedium,
+          )
               : const Text('Erro inesperado'),
           (message != null)
               ? Text(
-                  message!,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
+            message!,
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyMedium,
+          )
               : const Text('Tente novamente mais tarde.'),
         ],
       ),
     );
   }
+
+
 }
