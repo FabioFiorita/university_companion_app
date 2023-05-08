@@ -1,4 +1,4 @@
-import 'package:c317_mobile/components/error_body.dart';
+import 'package:c317_mobile/components/error_message.dart';
 import 'package:c317_mobile/exceptions/user_exception.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:flutter/material.dart';
@@ -52,17 +52,17 @@ class SubjectListScreen extends StatelessWidget {
 
   Widget _handleError(Object? error) {
     if (error is SubjectException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else if (error is UserException) {
-      return ErrorBody(
+      return ErrorMessage(
         title: error.title,
         message: error.message,
       );
     } else {
-      return const ErrorBody();
+      return const ErrorMessage();
     }
   }
 }
