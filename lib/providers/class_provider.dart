@@ -26,12 +26,14 @@ class ClassProvider extends ChangeNotifier {
   }
 
   Future<void> getClasses() async {
+    _isLoading = true;
+    notifyListeners();
+    if (_classes.isNotEmpty) {
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
     try {
-      _isLoading = true;
-      if (_classes.isNotEmpty) {
-        _isLoading = false;
-        return;
-      }
       if (user == null) {
         _isLoading = false;
         throw UserException.userNotFound;
