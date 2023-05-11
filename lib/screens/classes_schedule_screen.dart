@@ -1,4 +1,7 @@
+import 'package:c317_mobile/components/error_handler.dart';
+import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../components/class_card.dart';
 
@@ -20,26 +23,35 @@ class ClassesScheduleScreen extends StatelessWidget {
               'Minhas aulas',
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: ListView(
-                children: [
-                  ClassCard(
-                    subject: 'C317',
-                    date: 'Sexta-feira 19:30 - 21:10',
-                    location: 'Teams',
+            Consumer<ClassProvider>(
+              builder: (_, store, __) {
+                if (store.isLoading) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (store.error != null) {
+                  print(store.error);
+                  return Expanded(
+                      child: Center(child: ErrorHandler(error: store.error!)));
+                }
+                final classes = store.classes;
+                return Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: classes.length,
+                    itemBuilder: (context, index) {
+                      return ClassCard(
+                        subject: classes[index].subject.name,
+                        date: classes[index].date,
+                        location: classes[index].location,
+                      );
+                    },
                   ),
-                  ClassCard(
-                    subject: 'C202',
-                    date: 'Quinta-feira 13:30 - 15:10',
-                    location: 'I-15',
-                  ),
-                  ClassCard(
-                    subject: 'C214',
-                    date: 'Segunda-feira 10:00 - 11:40',
-                    location: 'I-17',
-                  ),
-              ],
-              ),
+                );
+              },
             ),
           ],
         ),

@@ -1,6 +1,12 @@
+import 'package:c317_mobile/components/error_handler.dart';
+import 'package:c317_mobile/providers/teacher_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../components/information_card.dart';
+import '../models/contact.dart';
+import '../models/teacher.dart';
+import '../providers/contact_provider.dart';
 
 class InformationListScreen extends StatelessWidget {
   final String title;
@@ -16,34 +22,6 @@ class InformationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<Widget> mockTeacherList = [
-      InformationCard(
-        title: 'Renzo Mesquita',
-        subtitle: 'renzo@inatel.br',
-      ),
-      InformationCard(
-        title: 'Chris Lima',
-        subtitle: 'chris@inatel.br',
-      ),
-      InformationCard(
-        title: 'Marcelo',
-        subtitle: 'marcelo@inatel.br',
-      ),
-    ];
-    const List<Widget> mockCollegePhones = [
-      InformationCard(
-        title: 'CRA',
-        subtitle: '(35) 3921-3123',
-      ),
-      InformationCard(
-        title: 'Tesouraria',
-        subtitle: '(35) 3921-3124',
-      ),
-      InformationCard(
-        title: 'RH',
-        subtitle: '(35) 3921-3125',
-      ),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -57,14 +35,64 @@ class InformationListScreen extends StatelessWidget {
               listLabel,
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: ListView(
-                children: isTeacherList ? mockTeacherList : mockCollegePhones,
-              ),
-            ),
+            (isTeacherList)
+                ? Expanded(
+                    child: Consumer<TeacherProvider>(
+                      builder: (_, store, __) {
+                        if (store.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (store.error != null) {
+                          return ErrorHandler(error: store.error!);
+                        }
+                        final teachers = store.teachers;
+                        return _teacherList(teachers);
+                      },
+                    ),
+                  )
+                : Expanded(
+                    child: Consumer<ContactProvider>(
+                      builder: (_, store, __) {
+                        if (store.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (store.error != null) {
+                          return ErrorHandler(error: store.error!);
+                        }
+                        final contacts = store.contacts;
+                        return _contactList(contacts);
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _teacherList(List<Teacher> teachers) {
+    return ListView.builder(
+      itemCount: teachers.length,
+      itemBuilder: (context, index) {
+        return InformationCard(
+          title: teachers[index].name,
+          subtitle: teachers[index].email,
+        );
+      },
+    );
+  }
+
+  Widget _contactList(List<Contact> contacts) {
+    return ListView.builder(
+      itemCount: contacts.length,
+      itemBuilder: (context, index) {
+        return InformationCard(
+          title: contacts[index].area,
+          subtitle: contacts[index].number,
+        );
+      },
     );
   }
 }

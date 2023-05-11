@@ -18,37 +18,43 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Theme.of(context).focusColor,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(Icons.home_rounded),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(Icons.date_range_rounded),
-            label: 'Horarios',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.userGraduate, size: 20),
-            label: 'Notas',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(Icons.account_circle_rounded),
-            label: 'Perfil',
-          ),
-        ],
-        onTap: (index) {
-          context.go(_getRoute(index));
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Theme.of(context).focusColor,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: FaIcon(Icons.home_rounded),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(Icons.date_range_rounded),
+              label: 'Horários',
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.userGraduate, size: 20),
+              label: 'Notas',
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(Icons.account_circle_rounded),
+              label: 'Perfil',
+            ),
+          ],
+          onTap: (index) {
+            context.go(_getRoute(index));
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

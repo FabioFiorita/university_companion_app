@@ -1,8 +1,12 @@
 import 'package:c317_mobile/components/action_card.dart';
 import 'package:c317_mobile/components/class_card.dart';
-import 'package:c317_mobile/components/user_avatar.dart';
+import 'package:c317_mobile/providers/class_provider.dart';
+import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../components/profile_picture.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,33 +19,61 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserAvatar(),
+            const ProfilePicture(),
             Text(
               'Bem vindo(a)',
               style: Theme.of(context).textTheme.displaySmall,
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text(
-                    'Avner Joseph',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                ),
-                Icon(Icons.waving_hand,
-                    color: Theme.of(context).colorScheme.primary),
-              ],
+            Consumer<UserProvider>(
+              builder: (providerContext, userProvider, child) {
+                if (userProvider.user == null) {
+                  return const SizedBox();
+                }
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        userProvider.user?.name ?? '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ),
+                    Icon(Icons.waving_hand,
+                        color: Theme.of(context).colorScheme.primary),
+                  ],
+                );
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-              child: Text('Sua próxima aula é',
-                  style: Theme.of(context).textTheme.bodyMedium),
+            Consumer<ClassProvider>(
+              builder: (providerContext, classProvider, child) {
+                if (classProvider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (classProvider.error != null) {
+                  return const SizedBox();
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                      child: Text('Sua próxima aula é',
+                          style: Theme.of(context).textTheme.bodyMedium),
+                    ),
+                    ClassCard(
+                      subject: classProvider.classes.first.subject.name,
+                      date: classProvider.classes.first.date,
+                      location: classProvider.classes.first.location,
+                    ),
+                  ],
+                );
+              },
             ),
-            ClassCard(
-                subject: 'C317', date: 'Sexta-Feira - 19:30', location: 'I-15'),
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
               child: ActionCard(

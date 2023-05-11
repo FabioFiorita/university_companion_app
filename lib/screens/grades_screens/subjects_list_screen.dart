@@ -1,7 +1,9 @@
+import 'package:c317_mobile/components/error_handler.dart';
+import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/grades/subject_card.dart';
-
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);
@@ -21,20 +23,32 @@ class SubjectListScreen extends StatelessWidget {
               'Matérias do semestre',
               style: Theme.of(context).textTheme.labelSmall,
             ),
-            Expanded(
-              child: ListView(
-                children: const [
-                  SubjectCard(
-                    subject: 'C317',
+            Consumer<SubjectProvider>(
+              builder: (_, store, __) {
+                if (store.isLoading) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (store.error != null) {
+                  return Expanded(
+                      child: Center(child: ErrorHandler(error: store.error!)));
+                }
+                final subjects = store.subjects;
+                return Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: subjects.length,
+                    itemBuilder: (context, index) {
+                      return SubjectCard(
+                        subject: subjects[index].name,
+                      );
+                    },
                   ),
-                  SubjectCard(
-                    subject: 'H003',
-                  ),
-                  SubjectCard(
-                    subject: 'H004',
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
