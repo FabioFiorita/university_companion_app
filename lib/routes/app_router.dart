@@ -23,7 +23,7 @@ class AppRouter {
 
   AppRouter(this.context) {
     final UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
+        Provider.of<UserProvider>(context, listen: true); //TODO: listen false
     routerConfig = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: '/login',
@@ -74,7 +74,7 @@ class AppRouter {
               path: '/classes',
               parentNavigatorKey: _shellKey,
               pageBuilder: (context, state) =>
-                  NoTransitionPage(child: ClassesScheduleScreen()),
+                  const NoTransitionPage(child: ClassesScheduleScreen()),
             ),
             GoRoute(
                 path: '/subjects',
@@ -112,6 +112,7 @@ class AppRouter {
             return '/login';
           }
         }
+        return null;
       },
     );
   }
