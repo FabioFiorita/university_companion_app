@@ -107,10 +107,6 @@ class AppRouter {
           if (state.location == '/login') {
             return '/';
           }
-        } else if (userProvider.tokenExpired) {
-          if (state.location != '/login') {
-            return '/login';
-          }
         }
         return null;
       },
