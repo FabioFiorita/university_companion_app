@@ -26,12 +26,15 @@ class SubjectListScreen extends StatelessWidget {
             Consumer<SubjectProvider>(
               builder: (_, store, __) {
                 if (store.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
                 if (store.error != null) {
-                  return ErrorHandler(error: store.error!);
+                  return Expanded(
+                      child: Center(child: ErrorHandler(error: store.error!)));
                 }
                 final subjects = store.subjects;
                 return Expanded(
