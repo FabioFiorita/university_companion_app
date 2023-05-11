@@ -27,16 +27,19 @@ class SubjectProvider extends ChangeNotifier {
 
   Future<void> getSubjects() async {
     _isLoading = true;
+    notifyListeners();
     if (_subjects.isNotEmpty) {
       _isLoading = false;
+      notifyListeners();
       return;
     }
-    if (user == null) {
-      _isLoading = false;
-      throw UserException.userNotFound;
-    }
-    final SubjectService subjectService = SubjectService();
     try {
+      if (user == null) {
+        _isLoading = false;
+        notifyListeners();
+        throw UserException.userNotFound;
+      }
+      final SubjectService subjectService = SubjectService();
       final List<Subject> subjects = await subjectService.getSubjects(user!);
       _isLoading = false;
       if (subjects.isEmpty) {
