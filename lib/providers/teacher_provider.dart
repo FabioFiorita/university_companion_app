@@ -23,8 +23,10 @@ class TeacherProvider extends ChangeNotifier {
 
   Future<void> getTeachers() async {
     _isLoading = true;
+    notifyListeners();
     if (_teachers.isNotEmpty) {
       _isLoading = false;
+      notifyListeners();
       return;
     }
     final TeacherService teacherService = TeacherService();
