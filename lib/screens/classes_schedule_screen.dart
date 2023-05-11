@@ -1,17 +1,12 @@
-import 'package:c317_mobile/exceptions/class_exception.dart';
-import 'package:c317_mobile/exceptions/user_exception.dart';
+import 'package:c317_mobile/components/error_handler.dart';
 import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../components/class_card.dart';
-import '../components/error_message.dart';
 
 class ClassesScheduleScreen extends StatelessWidget {
-  ClassesScheduleScreen({Key? key}) : super(key: key);
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  const ClassesScheduleScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +25,19 @@ class ClassesScheduleScreen extends StatelessWidget {
             ),
             Consumer<ClassProvider>(
               builder: (_, store, __) {
-                final classes = store.classes;
-                if (classes.isEmpty) {
-                  return _handleError(ClassException.classNotFound);
+                if (store.isLoading) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }
+                if (store.error != null) {
+                  print(store.error);
+                  return Expanded(
+                      child: Center(child: ErrorHandler(error: store.error!)));
+                }
+                final classes = store.classes;
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -53,21 +57,5 @@ class ClassesScheduleScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _handleError(Object? error) {
-    if (error is ClassException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else if (error is UserException) {
-      return ErrorMessage(
-        title: error.title,
-        message: error.message,
-      );
-    } else {
-      return const ErrorMessage();
-    }
   }
 }
