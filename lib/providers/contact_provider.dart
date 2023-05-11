@@ -23,8 +23,10 @@ class ContactProvider extends ChangeNotifier {
 
   Future<void> getContacts() async {
     _isLoading = true;
+    notifyListeners();
     if (_contacts.isNotEmpty) {
       _isLoading = false;
+      notifyListeners();
       return;
     }
     final ContactService contactService = ContactService();
