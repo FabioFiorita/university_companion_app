@@ -41,8 +41,10 @@ void main() async {
         ChangeNotifierProvider<ContactProvider>(
           create: (_) => ContactProvider(),
         ),
-        ChangeNotifierProvider<TeacherProvider>(
-          create: (_) => TeacherProvider(),
+        ChangeNotifierProxyProvider<UserProvider, TeacherProvider>(
+          update: (context, userProvider, previousGrade) =>
+              TeacherProvider(userProvider.user),
+          create: (BuildContext context) => TeacherProvider(null),
         ),
       ],
       child: const MyApp(),

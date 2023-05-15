@@ -16,11 +16,15 @@ class ExamService {
 
   Future<List<Exam>> getExams(User user) async {
     try {
-      http.Response response = await client.get(
-          Uri.parse("${WebClient.baseUrl}users/${user.id}/grades"),
-          headers: {
-            "Authorization": "Bearer ${user.accessToken}",
-          }).timeout(const Duration(seconds: 5));
+      http.Response response = await client
+          .get(Uri.parse("${WebClient.baseUrl}student/${user.id}"), headers: {
+        "Authorization": "Bearer ${user.accessToken}",
+      }).timeout(const Duration(seconds: 5));
+
+      if (response.statusCode != 200) {
+        ResponseHandler.handleStatusCode(
+            response.statusCode, ExamException.gradeNotFound);
+      }
 
       if (response.statusCode != 200) {
         ResponseHandler.handleStatusCode(
@@ -33,14 +37,50 @@ class ExamService {
     }
   }
 
+  Future<String> getGrade(User user, int examId) async {
+    try {
+      http.Response response = await client
+          .get(Uri.parse("${WebClient.baseUrl}exam/$examId"), headers: {
+        "Authorization": "Bearer ${user.accessToken}",
+      }).timeout(const Duration(seconds: 5));
+      print("Grade response: $response");
+      if (response.statusCode != 200) {
+        ResponseHandler.handleStatusCode(
+            response.statusCode, ExamException.gradeNotFound);
+      }
+
+      return response.body;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Exam>> saveInfoFromResponse(String body, User user) async {
+    final List<dynamic> decodedJson = jsonDecode(body)['exams'];
+    print("Decoded json: $decodedJson");
     final List<Exam> grades = [];
 
-    for (final grade in jsonDecode(body)) {
-      final Subject subject =
-          await subjectService.getSubjectById(grade['subjectId'], user);
-      final newGrade = Exam.fromJson(grade, subject);
-      grades.add(newGrade);
+    for (final exam in decodedJson) {
+      print("Exam: $exam");
+      final List<dynamic> subjects = jsonDecode(body)['subjects'];
+      print("Subjects: $subjects");
+      final String subjectId = subjects
+          .firstWhere((subject) => subject['id'] == exam['subject_id'])['id'];
+      print("Subject id: $subjectId");
+      SubjectService subjectService = SubjectService();
+      final Subject? subject =
+          await subjectService.getSubjectById(subjectId, user);
+      print("Subject: $subject");
+      final String gradeResponse = await getGrade(user, exam['id']);
+      print("Grade response: $gradeResponse");
+      final int grade = jsonDecode(gradeResponse)['students']
+          .firstWhere((student) => student['student_id'] == user.id)['grade']
+          .toInt();
+      print("Grade: $grade");
+      if (subject != null) {
+        final newGrade = Exam.fromJson(exam, grade, subject);
+        grades.add(newGrade);
+      }
     }
 
     return grades;

@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ClassCard(
                       subject: classProvider.classes.first.subject.name,
-                      date: classProvider.classes.first.date,
-                      location: classProvider.classes.first.location,
+                      day: classProvider.classes.first.day,
+                      time: classProvider.classes.first.time,
                     ),
                   ],
                 );

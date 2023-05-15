@@ -44,6 +44,9 @@ class InformationListScreen extends StatelessWidget {
                               child: CircularProgressIndicator());
                         }
                         if (store.error != null) {
+                          print(store.error);
+                          Error error = store.error! as Error;
+                          print(error.stackTrace);
                           return ErrorHandler(error: store.error!);
                         }
                         final teachers = store.teachers;

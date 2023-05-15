@@ -8,13 +8,15 @@ import '../http/web_client.dart';
 import '../models/contact.dart';
 
 class ContactService {
-  http.Client client = WebClient().client;
+  http.Client client = http.Client();
+  final String baseUrl =
+      "https://raw.githubusercontent.com/FabioFiorita/c317_json/main/contacts.json";
 
   Future<List<Contact>> getContacts() async {
     try {
       http.Response response = await client
           .get(
-            Uri.parse("${WebClient.baseUrl}contacts"),
+            Uri.parse(baseUrl),
           )
           .timeout(const Duration(seconds: 5));
 
@@ -30,7 +32,7 @@ class ContactService {
   }
 
   Future<List<Contact>> saveInfoFromResponse(String body) async {
-    final List<Contact> contacts = jsonDecode(body)
+    final List<Contact> contacts = jsonDecode(body)['contacts']
         .map<Contact>((contact) => Contact.fromJson(contact))
         .toList();
 

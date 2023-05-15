@@ -23,7 +23,7 @@ class AppRouter {
 
   AppRouter(this.context) {
     final UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: true); //TODO: listen false
+        Provider.of<UserProvider>(context, listen: false);
     routerConfig = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: '/login',

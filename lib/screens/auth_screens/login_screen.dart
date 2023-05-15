@@ -139,6 +139,8 @@ class LoginScreen extends StatelessWidget {
             message: 'Verifique sua conexão com a internet.',
           );
         } else {
+          print(e);
+          print(e.stackTrace);
           MaterialDialog.showMaterialDialog(
             context: context,
             title: 'Erro desconhecido',

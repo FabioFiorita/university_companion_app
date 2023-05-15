@@ -86,18 +86,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
             ),
           ),
-          Text(
-            userProvider.user?.course ?? '',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-          ),
-          Text(
-            userProvider.user?.enrollmentNumber ?? '',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-          ),
+          // Text(
+          //   userProvider.user?.course ?? '',
+          //   style: Theme.of(context).textTheme.titleSmall?.copyWith(
+          //         color: Theme.of(context).colorScheme.secondary,
+          //       ),
+          // ),
         ],
       ),
     ));

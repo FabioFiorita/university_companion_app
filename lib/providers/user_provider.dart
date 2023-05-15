@@ -31,8 +31,7 @@ class UserProvider extends ChangeNotifier {
     await _prefs.setString("id", user.id.toString());
     await _prefs.setString("email", user.email);
     await _prefs.setString("name", user.name);
-    await _prefs.setString("course", user.course);
-    await _prefs.setString("enrollmentNumber", user.enrollmentNumber);
+    //await _prefs.setString("course", user.course);
     setLastLoginTimestamp();
     notifyListeners();
   }
@@ -60,8 +59,7 @@ class UserProvider extends ChangeNotifier {
     _prefs.remove("id");
     _prefs.remove("email");
     _prefs.remove("name");
-    _prefs.remove("course");
-    _prefs.remove("enrollmentNumber");
+    //_prefs.remove("course");
     _prefs.remove("lastLoginTimestamp");
   }
 
@@ -69,7 +67,7 @@ class UserProvider extends ChangeNotifier {
     final int? lastLoginTimestamp = _prefs.getInt("lastLoginTimestamp");
     if (lastLoginTimestamp != null) {
       if (DateTime.now().millisecondsSinceEpoch - lastLoginTimestamp >
-          3600000) {
+          2629800000) {
         _tokenExpired = true;
         clearUser();
         notifyListeners();
@@ -81,8 +79,7 @@ class UserProvider extends ChangeNotifier {
       email: _prefs.getString("email") ?? '',
       accessToken: _prefs.getString("accessToken") ?? '',
       name: _prefs.getString("name") ?? '',
-      course: _prefs.getString("course") ?? '',
-      enrollmentNumber: _prefs.getString("enrollmentNumber") ?? '',
+      //course: _prefs.getString("course") ?? '',
     );
     if (user.accessToken.isNotEmpty) {
       _user = user;

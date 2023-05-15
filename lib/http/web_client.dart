@@ -5,8 +5,7 @@ import 'logging_interceptor.dart';
 
 class WebClient {
   // static const String baseUrl = 'http://192.168.68.124:8000/api/';
-  static const String baseUrl =
-      'https://json-server-vercel-icgvgk67x-fabiofiorita.vercel.app/';
+  static const String baseUrl = 'http://192.168.68.128:8000/api/';
 
   http.Client client = InterceptedClient.build(
     interceptors: [LoggingInterceptor()],

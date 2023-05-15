@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../exceptions/teacher_exception.dart';
+import '../exceptions/user_exception.dart';
 import '../models/teacher.dart';
+import '../models/user.dart';
 import '../service/teacher_service.dart';
 
 class TeacherProvider extends ChangeNotifier {
   List<Teacher> _teachers = [];
 
   List<Teacher> get teachers => _teachers;
+
+  final User? user;
 
   bool _isLoading = false;
 
@@ -17,7 +21,7 @@ class TeacherProvider extends ChangeNotifier {
 
   Object? get error => _error;
 
-  TeacherProvider() {
+  TeacherProvider(this.user) {
     getTeachers();
   }
 
@@ -31,7 +35,12 @@ class TeacherProvider extends ChangeNotifier {
     }
     final TeacherService teacherService = TeacherService();
     try {
-      final List<Teacher> teachers = await teacherService.getTeachers();
+      if (user == null) {
+        _isLoading = false;
+        notifyListeners();
+        throw UserException.userNotFound;
+      }
+      final List<Teacher> teachers = await teacherService.getTeachers(user!);
       _isLoading = false;
       if (teachers.isEmpty) {
         throw TeacherException.teacherNotFound;

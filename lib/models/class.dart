@@ -3,27 +3,23 @@ import 'package:c317_mobile/models/teacher.dart';
 
 class Class {
   final int id;
-  final String date;
-  final String location;
+  final String day;
+  final String time;
   final Subject subject;
-  final Teacher teacher;
 
   Class({
     required this.id,
-    required this.date,
-    required this.location,
+    required this.day,
+    required this.time,
     required this.subject,
-    required this.teacher,
   });
 
-  factory Class.fromJson(
-      Map<String, dynamic> json, Subject subject, Teacher teacher) {
+  factory Class.fromJson(Map<String, dynamic> json, Subject subject) {
     return Class(
       id: json['id'],
-      date: json['date'],
-      location: json['location'],
+      day: json['day'],
+      time: json['time'],
       subject: subject,
-      teacher: teacher,
     );
   }
 }

@@ -13,11 +13,11 @@ class Exam {
     required this.subject,
   });
 
-  factory Exam.fromJson(Map<String, dynamic> json, Subject subject) {
+  factory Exam.fromJson(Map<String, dynamic> json, int grade, Subject subject) {
     return Exam(
       id: json['id'],
       code: json['code'],
-      grade: json['grade'],
+      grade: grade,
       subject: subject,
     );
   }

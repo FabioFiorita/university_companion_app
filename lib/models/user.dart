@@ -3,16 +3,15 @@ class User {
   final String email;
   final String accessToken;
   final String name;
-  final String course;
-  final String enrollmentNumber;
+
+  //final String course;
 
   User({
     required this.id,
     required this.email,
     required this.accessToken,
     required this.name,
-    required this.course,
-    required this.enrollmentNumber,
+    //required this.course,
   });
 
   factory User.fromJson(Map<String, dynamic> json, String accessToken) {
@@ -21,8 +20,7 @@ class User {
       email: json['email'],
       accessToken: accessToken,
       name: json['name'],
-      course: json['course'],
-      enrollmentNumber: json['enrollment_number'],
+      //course: json['course'],
     );
   }
 }

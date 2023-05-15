@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:c317_mobile/exceptions/general_exception.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/user_exception.dart';
@@ -13,10 +14,15 @@ class UserService {
 
   Future<User> login(String email, String password) async {
     try {
-      final http.Response response = await client.post(
-        Uri.parse("${WebClient.baseUrl}login"),
-        body: {"email": email, "password": password},
-      ).timeout(const Duration(seconds: 5));
+      final http.Response response = await client
+          .post(
+            Uri.parse("${WebClient.baseUrl}login/"),
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: jsonEncode({"email": email, "password": password}),
+          )
+          .timeout(const Duration(seconds: 5));
 
       if (response.statusCode != 200) {
         ResponseHandler.handleStatusCode(
@@ -30,9 +36,10 @@ class UserService {
   }
 
   Future<User> saveInfoFromResponse(String body) async {
-    final String accessToken = jsonDecode(body)["accessToken"];
-    final User user = User.fromJson(jsonDecode(body)["user"], accessToken);
-
+    final String accessToken = jsonDecode(body)["token"];
+    final jwt = JWT.decode(accessToken);
+    print(jwt.payload);
+    final User user = User.fromJson(jwt.payload, accessToken);
     return user;
   }
 

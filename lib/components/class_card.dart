@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 
 class ClassCard extends StatelessWidget {
   final String subject;
-  final String date;
-  final String location;
+  final String day;
+  final String time;
 
   ClassCard(
-      {Key? key,
-      required this.subject,
-      required this.date,
-      required this.location})
+      {Key? key, required this.subject, required this.day, required this.time})
       : super(key: key);
 
   @override
@@ -29,13 +26,9 @@ class ClassCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                 child: Text(
-                  date,
+                  "$day - $time",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ),
-              Text(
-                ('Sala: $location'),
-                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),

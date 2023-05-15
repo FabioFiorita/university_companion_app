@@ -33,7 +33,6 @@ class ClassesScheduleScreen extends StatelessWidget {
                   );
                 }
                 if (store.error != null) {
-                  print(store.error);
                   return Expanded(
                       child: Center(child: ErrorHandler(error: store.error!)));
                 }
@@ -45,8 +44,8 @@ class ClassesScheduleScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ClassCard(
                         subject: classes[index].subject.name,
-                        date: classes[index].date,
-                        location: classes[index].location,
+                        day: classes[index].day,
+                        time: classes[index].time,
                       );
                     },
                   ),
