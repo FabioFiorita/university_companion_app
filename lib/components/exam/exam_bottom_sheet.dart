@@ -3,12 +3,12 @@ import 'package:c317_mobile/components/input_textfield.dart';
 import 'package:c317_mobile/utils/validators.dart';
 import 'package:flutter/material.dart';
 
-class GradeBottomSheet extends StatelessWidget {
+class ExamBottomSheet extends StatelessWidget {
   final VoidCallback onPressed;
   final TextEditingController gradeNameController;
   final TextEditingController gradeValueController;
 
-  const GradeBottomSheet(
+  const ExamBottomSheet(
       {Key? key,
       required this.onPressed,
       required this.gradeNameController,

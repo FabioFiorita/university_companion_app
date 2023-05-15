@@ -1,6 +1,6 @@
 import 'package:c317_mobile/providers/class_provider.dart';
 import 'package:c317_mobile/providers/contact_provider.dart';
-import 'package:c317_mobile/providers/grade_provider.dart';
+import 'package:c317_mobile/providers/exam_provider.dart';
 import 'package:c317_mobile/providers/profile_picture_provider.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:c317_mobile/providers/teacher_provider.dart';
@@ -14,38 +14,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<ProfilePictureProvider>(
-        create: (_) => ProfilePictureProvider(prefs),
-      ),
-      ChangeNotifierProvider<UserProvider>(
-        create: (_) => UserProvider(prefs),
-      ),
-      ChangeNotifierProxyProvider<UserProvider, SubjectProvider>(
-        update: (context, userProvider, previousSubject) =>
-            SubjectProvider(userProvider.user),
-        create: (BuildContext context) => SubjectProvider(null),
-      ),
-      ChangeNotifierProxyProvider<UserProvider, GradeProvider>(
-        update: (context, userProvider, previousGrade) =>
-            GradeProvider(userProvider.user),
-        create: (BuildContext context) => GradeProvider(null),
-      ),
-      ChangeNotifierProxyProvider<UserProvider, ClassProvider>(
-        update: (context, userProvider, previousGrade) =>
-            ClassProvider(userProvider.user),
-        create: (BuildContext context) => ClassProvider(null),
-      ),
-      ChangeNotifierProvider<ContactProvider>(
-        create: (_) => ContactProvider(),
-      ),
-      ChangeNotifierProvider<TeacherProvider>(
-        create: (_) => TeacherProvider(),
-      ),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProfilePictureProvider>(
+          create: (_) => ProfilePictureProvider(prefs),
+        ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(prefs),
+        ),
+        ChangeNotifierProxyProvider<UserProvider, SubjectProvider>(
+          update: (context, userProvider, previousSubject) =>
+              SubjectProvider(userProvider.user),
+          create: (BuildContext context) => SubjectProvider(null),
+        ),
+        ChangeNotifierProxyProvider<UserProvider, ExamProvider>(
+          update: (context, userProvider, previousGrade) =>
+              ExamProvider(userProvider.user),
+          create: (BuildContext context) => ExamProvider(null),
+        ),
+        ChangeNotifierProxyProvider<UserProvider, ClassProvider>(
+          update: (context, userProvider, previousGrade) =>
+              ClassProvider(userProvider.user),
+          create: (BuildContext context) => ClassProvider(null),
+        ),
+        ChangeNotifierProvider<ContactProvider>(
+          create: (_) => ContactProvider(),
+        ),
+        ChangeNotifierProvider<TeacherProvider>(
+          create: (_) => TeacherProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class GradeCard extends StatelessWidget {
+class ExamCard extends StatelessWidget {
   final String exam;
   int? grade;
 
-  GradeCard({Key? key, required this.exam, this.grade}) : super(key: key);
+  ExamCard({Key? key, required this.exam, this.grade}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

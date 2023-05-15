@@ -1,26 +1,26 @@
 import 'package:c317_mobile/components/action_button.dart';
-import 'package:c317_mobile/components/grades/average_card.dart';
-import 'package:c317_mobile/components/grades/grade_bottom_sheet.dart';
-import 'package:c317_mobile/components/grades/grade_card.dart';
-import 'package:c317_mobile/models/grade.dart';
-import 'package:c317_mobile/providers/grade_provider.dart';
+import 'package:c317_mobile/components/exam/average_card.dart';
+import 'package:c317_mobile/components/exam/exam_bottom_sheet.dart';
+import 'package:c317_mobile/components/exam/exam_card.dart';
+import 'package:c317_mobile/models/exam.dart';
+import 'package:c317_mobile/providers/exam_provider.dart';
 import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/error_handler.dart';
-import '../../models/subject.dart';
+import '../components/error_handler.dart';
+import '../models/subject.dart';
 
-class SubjectGradeScreen extends StatefulWidget {
+class SubjectExamScreen extends StatefulWidget {
   final String subject;
 
-  const SubjectGradeScreen({Key? key, required this.subject}) : super(key: key);
+  const SubjectExamScreen({Key? key, required this.subject}) : super(key: key);
 
   @override
-  State<SubjectGradeScreen> createState() => _SubjectGradeScreenState();
+  State<SubjectExamScreen> createState() => _SubjectExamScreenState();
 }
 
-class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
+class _SubjectExamScreenState extends State<SubjectExamScreen> {
   final TextEditingController gradeNameController = TextEditingController();
   final TextEditingController gradeValueController = TextEditingController();
   bool isSimulating = false;
@@ -30,7 +30,7 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
     final Subject subject = Provider.of<SubjectProvider>(context, listen: false)
         .subjects
         .firstWhere((element) => element.name == widget.subject);
-    return Consumer<GradeProvider>(builder: (_, store, __) {
+    return Consumer<ExamProvider>(builder: (_, store, __) {
       final grades = store.grades
           .where((element) => element.subject.name == widget.subject)
           .toList();
@@ -60,7 +60,7 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
                       setState(
                         () {
                           isSimulating = !isSimulating;
-                          store.toggleGradeSimulation();
+                          store.toggleExamSimulation();
                         },
                       );
                     },
@@ -90,9 +90,9 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
                       isScrollControlled: true,
                       isDismissible: true,
                       builder: (context) {
-                        return GradeBottomSheet(
+                        return ExamBottomSheet(
                             onPressed: () {
-                              final bool result = store.addSimulatedGrade(
+                              final bool result = store.addSimulatedExam(
                                   gradeNameController.text,
                                   int.parse(gradeValueController.text),
                                   subject);
@@ -127,20 +127,20 @@ class _SubjectGradeScreenState extends State<SubjectGradeScreen> {
     });
   }
 
-  int getAverage(List<Grade> grades) {
+  int getAverage(List<Exam> grades) {
     if (grades.isEmpty) {
       return 0;
     }
     return grades.map((e) => e.grade).reduce((a, b) => a + b) ~/ grades.length;
   }
 
-  Widget gradeList(List<Grade> grades) {
+  Widget gradeList(List<Exam> grades) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: GradeCard(
+            child: ExamCard(
               exam: grades[index].code,
               grade: grades[index].grade,
             ),

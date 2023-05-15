@@ -1,18 +1,18 @@
-import 'package:c317_mobile/exceptions/grade_exception.dart';
+import 'package:c317_mobile/exceptions/exam_exception.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../exceptions/user_exception.dart';
-import '../models/grade.dart';
+import '../models/exam.dart';
 import '../models/subject.dart';
 import '../models/user.dart';
-import '../service/grade_service.dart';
+import '../service/exam_service.dart';
 
-class GradeProvider extends ChangeNotifier {
-  List<Grade> _grades = [];
+class ExamProvider extends ChangeNotifier {
+  List<Exam> _grades = [];
 
-  List<Grade> get grades => _grades;
+  List<Exam> get grades => _grades;
 
-  List<Grade> simulatedGrades = [];
+  List<Exam> simulatedGrades = [];
 
   final User? user;
 
@@ -24,11 +24,11 @@ class GradeProvider extends ChangeNotifier {
 
   Object? get error => _error;
 
-  GradeProvider(this.user) {
-    getGrades();
+  ExamProvider(this.user) {
+    getExams();
   }
 
-  Future<void> getGrades() async {
+  Future<void> getExams() async {
     _isLoading = true;
     notifyListeners();
     if (_grades.isNotEmpty) {
@@ -41,11 +41,11 @@ class GradeProvider extends ChangeNotifier {
         _isLoading = false;
         throw UserException.userNotFound;
       }
-      final GradeService gradeService = GradeService();
-      final List<Grade> grades = await gradeService.getGrades(user!);
+      final ExamService gradeService = ExamService();
+      final List<Exam> grades = await gradeService.getExams(user!);
       _isLoading = false;
       if (grades.isEmpty) {
-        throw GradeException.gradeNotFound;
+        throw ExamException.gradeNotFound;
       }
       _grades = grades;
       notifyListeners();
@@ -58,22 +58,22 @@ class GradeProvider extends ChangeNotifier {
 
   Future<void> resetCache() async {
     _grades = [];
-    await getGrades();
+    await getExams();
   }
 
-  toggleGradeSimulation() {
+  toggleExamSimulation() {
     simulatedGrades = _grades.toList();
     notifyListeners();
   }
 
-  bool addSimulatedGrade(String code, int value, Subject subject) {
+  bool addSimulatedExam(String code, int value, Subject subject) {
     if (code.isEmpty || value < 0 || value > 100) {
       return false;
     }
     if (_grades.any((grade) => grade.code == code)) {
       return false;
     }
-    final Grade newGrade = Grade(
+    final Exam newGrade = Exam(
       id: 0,
       code: code,
       grade: value,

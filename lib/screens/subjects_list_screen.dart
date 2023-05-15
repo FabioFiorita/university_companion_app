@@ -3,7 +3,7 @@ import 'package:c317_mobile/providers/subject_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/grades/subject_card.dart';
+import '../components/exam/subject_card.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({Key? key}) : super(key: key);

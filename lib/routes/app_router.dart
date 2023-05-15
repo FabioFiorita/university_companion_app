@@ -1,8 +1,8 @@
 import 'package:c317_mobile/providers/user_provider.dart';
 import 'package:c317_mobile/screens/auth_screens/login_screen.dart';
 import 'package:c317_mobile/screens/classes_schedule_screen.dart';
-import 'package:c317_mobile/screens/grades_screens/subject_grade_screen.dart';
-import 'package:c317_mobile/screens/grades_screens/subjects_list_screen.dart';
+import 'package:c317_mobile/screens/subject_exam_screen.dart';
+import 'package:c317_mobile/screens/subjects_list_screen.dart';
 import 'package:c317_mobile/screens/home_screen.dart';
 import 'package:c317_mobile/screens/information_list_screen.dart';
 import 'package:c317_mobile/screens/navigation_screen.dart';
@@ -87,7 +87,7 @@ class AppRouter {
                     path: ':subject',
                     parentNavigatorKey: _parentKey,
                     builder: (context, state) {
-                      return SubjectGradeScreen(
+                      return SubjectExamScreen(
                         subject: state.params['subject']!,
                       );
                     },
@@ -108,7 +108,6 @@ class AppRouter {
             return '/';
           }
         }
-        return null;
       },
     );
   }

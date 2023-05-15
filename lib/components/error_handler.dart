@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../exceptions/class_exception.dart';
 import '../exceptions/contact_exception.dart';
 import '../exceptions/general_exception.dart';
-import '../exceptions/grade_exception.dart';
+import '../exceptions/exam_exception.dart';
 import '../exceptions/subject_exception.dart';
 import '../exceptions/teacher_exception.dart';
 import '../exceptions/user_exception.dart';
@@ -32,7 +32,7 @@ class ErrorHandler extends StatelessWidget {
         message: e.message,
       );
     }
-    if (e is GradeException) {
+    if (e is ExamException) {
       return ErrorMessage(
         title: e.title,
         message: e.message,
