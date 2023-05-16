@@ -12,7 +12,7 @@ import '../utils/response_handler.dart';
 
 class ExamService {
   http.Client client = WebClient().client;
-  final SubjectService subjectService = SubjectService();
+  SubjectService subjectService = SubjectService();
 
   Future<List<Exam>> getExams(User user) async {
     try {
@@ -67,7 +67,6 @@ class ExamService {
       final String subjectId = subjects
           .firstWhere((subject) => subject['id'] == exam['subject_id'])['id'];
       print("Subject id: $subjectId");
-      SubjectService subjectService = SubjectService();
       final Subject? subject =
           await subjectService.getSubjectById(subjectId, user);
       print("Subject: $subject");
