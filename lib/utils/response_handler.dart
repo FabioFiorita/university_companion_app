@@ -1,7 +1,7 @@
 import '../exceptions/general_exception.dart';
 
 class ResponseHandler {
-  static void handleStatusCode(int statusCode, Exception exception) {
+  static void handleStatusCode(int statusCode, Exception? exception) {
     switch (statusCode) {
       case 200:
         // success
@@ -9,7 +9,7 @@ class ResponseHandler {
       case 400:
         throw GeneralException.undefined;
       case 404:
-        throw exception;
+        throw exception ?? GeneralException.undefined;
       case 429:
         throw GeneralException.tooManyRequests;
       default:
