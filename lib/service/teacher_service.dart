@@ -41,7 +41,7 @@ class TeacherService {
             response.statusCode, TeacherException.teacherNotFound);
       }
 
-      return Teacher.fromJson(json.decode(response.body));
+      return Teacher.fromJson(jsonDecode(response.body));
     } catch (e) {
       rethrow;
     }
