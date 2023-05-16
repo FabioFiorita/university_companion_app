@@ -11,7 +11,7 @@ import '../utils/response_handler.dart';
 
 class SubjectService {
   http.Client client = WebClient().client;
-  final TeacherService teacherService = TeacherService();
+  TeacherService teacherService = TeacherService();
 
   Future<List<Subject>> getSubjects(User user) async {
     try {
