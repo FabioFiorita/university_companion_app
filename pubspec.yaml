@@ -51,6 +51,7 @@ dependencies:
   material_dialogs: ^1.1.4
   pull_to_refresh: ^2.0.0
   dart_jsonwebtoken: ^2.7.1
+  mockito: ^5.4.0
 
 dev_dependencies:
   flutter_test:
