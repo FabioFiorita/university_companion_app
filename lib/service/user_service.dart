@@ -53,6 +53,9 @@ class UserService {
         return UserException.userNotFound;
       }
     }
+    if (response.statusCode == 401) {
+      return UserException.unauthorized;
+    }
     return GeneralException.undefined;
   }
 }
