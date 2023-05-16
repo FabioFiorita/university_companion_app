@@ -8,6 +8,8 @@ class ResponseHandler {
         break;
       case 400:
         throw GeneralException.undefined;
+      case 401:
+        throw exception ?? GeneralException.undefined;
       case 404:
         throw exception ?? GeneralException.undefined;
       case 429:
