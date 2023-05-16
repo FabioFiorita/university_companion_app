@@ -4,7 +4,6 @@ import 'package:c317_mobile/exceptions/contact_exception.dart';
 import 'package:c317_mobile/utils/response_handler.dart';
 import 'package:http/http.dart' as http;
 
-import '../http/web_client.dart';
 import '../models/contact.dart';
 
 class ContactService {
