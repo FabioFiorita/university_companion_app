@@ -1,4 +1,5 @@
 enum UserException implements Exception {
+  unauthorized(title: "Não autorizado", message: "Faça login para continuar."),
   invalidEmail(
       title: "E-mail inválido", message: "Verifique o endereço de e-mail."),
   weakPassword(
