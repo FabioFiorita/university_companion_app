@@ -18,7 +18,6 @@ class ClassService {
     try {
       http.Response response =
       await client.get(Uri.parse("${WebClient.baseUrl}class_schedule"),
-          //TODO: Get only classes for the current user
           headers: {
             "Authorization": "Bearer ${user.accessToken}",
           }).timeout(const Duration(seconds: 5));
