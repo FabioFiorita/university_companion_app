@@ -10,8 +10,8 @@ class ActionButton extends StatelessWidget {
       {Key? key,
       required this.text,
       required this.onPressed,
-        this.color,
-        this.textColor})
+      this.color,
+      this.textColor})
       : super(key: key);
 
   @override
