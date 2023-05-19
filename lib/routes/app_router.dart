@@ -42,7 +42,9 @@ class AppRouter {
         GoRoute(
           path: '/onboarding',
           parentNavigatorKey: _parentKey,
-          builder: (context, state) => const OnboardingScreen(),
+          builder: (context, state) => const OnboardingScreen(
+            key: Key('onboarding'),
+          ),
         ),
         ShellRoute(
           navigatorKey: _shellKey,
