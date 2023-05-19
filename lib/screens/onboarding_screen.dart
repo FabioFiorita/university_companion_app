@@ -57,6 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
             child: ActionButton(
+              key: const Key('onboarding_continue_button'),
               text: 'Continuar',
               onPressed: () {
                 if (_currentPage == pages.length - 1) {
