@@ -68,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: InputTextField(
+                          key: const Key('email'),
                           formFieldKey: emailFormKey,
                           controller: _emailController,
                           isPassword: false,
@@ -79,6 +80,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       InputTextField(
+                        key: const Key('password'),
                         formFieldKey: passwordFormKey,
                         controller: _passwordController,
                         isPassword: true,
@@ -90,6 +92,7 @@ class LoginScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
                         child: ActionButton(
+                          key: const Key('loginButton'),
                           text: 'Entrar',
                           onPressed: () {
                             if (emailFormKey.currentState!.validate() &&
@@ -102,6 +105,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       ActionButton(
+                        key: const Key('forgotPasswordButton'),
                         text: 'Esqueci minha senha',
                         onPressed: () {
                           context.push('/forgot-password');
