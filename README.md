@@ -5,7 +5,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/fabiofiorita/university_companion_app)
 
 ## 📋 Overview
-"University Companion App" is a versatile and user-friendly mobile application designed to assist universities and educational institutions in creating their personalized apps for students. The app provides a seamless experience for students to access and keep track of their class schedules, exam dates, and other crucial academic events. This open-source project aims to empower educational institutions to enhance students' academic experience and streamline the process of managing classes and exams.
+University Companion App is a versatile and user-friendly mobile application designed to assist universities and educational institutions in creating their personalized apps for students. The app provides a seamless experience for students to access and keep track of their class schedules, exam dates, and other crucial academic events. This open-source project aims to empower educational institutions to enhance students' academic experience and streamline the process of managing classes and exams.
 
 ## 🛠 Technologies Used
 The app is built using the following technologies:
